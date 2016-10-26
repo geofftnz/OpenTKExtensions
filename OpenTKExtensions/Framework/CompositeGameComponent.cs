@@ -5,13 +5,16 @@ using System.Text;
 
 namespace OpenTKExtensions.Framework
 {
-    public class CompositeGameComponent : GameComponentBase, IResizeable, IReloadable
+    public class CompositeGameComponent : GameComponentBase, IResizeable, IReloadable, IUpdateable, IRenderable
     {
         protected GameComponentCollection components = new GameComponentCollection();
         public GameComponentCollection Components
         {
             get { return this.components; }
         }
+
+        public bool Visible { get; set; } = true;
+        public int DrawOrder { get; set; } = 0;
 
         public CompositeGameComponent()
             : base()
@@ -30,6 +33,16 @@ namespace OpenTKExtensions.Framework
             this.Components.Unload();
         }
 
+        public void Add(IGameComponent component)
+        {
+            this.Components.Add(component);
+        }
+
+        public void Remove(IGameComponent component)
+        {
+            this.Components.Remove(component);
+        }
+
         public virtual void Resize(int width, int height)
         {
             this.Components.Resize(width, height);
@@ -40,5 +53,14 @@ namespace OpenTKExtensions.Framework
             this.Components.Reload();
         }
 
+        public virtual void Update(IFrameUpdateData frameData)
+        {
+            this.Components.Update(frameData);
+        }
+
+        public virtual void Render(IFrameRenderData frameData)
+        {
+            this.Components.Render(frameData);
+        }
     }
 }
