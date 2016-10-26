@@ -204,11 +204,11 @@ namespace OpenTKExtensions.Text
 
                 float t = 0.0;
                 t += texture2D(tex0,p).a;
-                t += texture2D(tex0,p + vec2(TEXEL,0.0)).a;
-                t += texture2D(tex0,p + vec2(-TEXEL,0.0)).a;
-                t += texture2D(tex0,p + vec2(0.0,TEXEL)).a;
-                t += texture2D(tex0,p + vec2(0.0,-TEXEL)).a;
-                t /= 5.0;    
+                //t += texture2D(tex0,p + vec2(TEXEL,0.0)).a;
+                //t += texture2D(tex0,p + vec2(-TEXEL,0.0)).a;
+                //t += texture2D(tex0,p + vec2(0.0,TEXEL)).a;
+                //t += texture2D(tex0,p + vec2(0.0,-TEXEL)).a;
+                //t /= 5.0;    
                 return t;            
             }
 
@@ -217,13 +217,13 @@ namespace OpenTKExtensions.Text
                 float t = samplePos(texcoord0.xy);
                 vec4 col = col0;
                 
-                //vec4 colBorder = vec4(0.0,0.0,0.0,0.4);
-                vec4 colBorder = vec4(col0.rgb * 0.5,0.4);
+                vec4 colBorder = vec4(0.0,0.0,0.0,0.4);
+                //vec4 colBorder = vec4(col0.rgb * 0.5,0.4);
 
-                col = mix(colBorder,col,smoothstep(0.45,0.7,t));
+                //col = mix(colBorder,col,smoothstep(0.45,0.7,t));
 
 
-                col.a = col.a * smoothstep(0.1,0.5,t);
+                col.a = col.a * smoothstep(0.5,0.7,t);
                 out_Colour = col;
             }
              ";
@@ -323,10 +323,12 @@ namespace OpenTKExtensions.Text
 
             this.sdfTexture = new Texture(this.Name + "_tex", info.Width, info.Height, TextureTarget.Texture2D, PixelInternalFormat.Alpha, PixelFormat.Alpha, PixelType.UnsignedByte);
             this.sdfTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear))
-                .SetParameter(new TextureParameterInt(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear))
+                .SetParameter(new TextureParameterInt(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear))
                 .SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp))
                 .SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp))
                 .Upload(data);
+            this.sdfTexture.Bind();
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
             IsTextureLoaded = true;
 
