@@ -63,6 +63,7 @@
     <Compile Include="Exceptions\ShaderCompileException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Filesystem\FileSystemPoller.cs" />
+    <Compile Include="Framework\ITimedComponent.cs" />
     <Compile Include="Input\KeyboardActionManager.cs" />
     <Compile Include="Loaders\MultiPathFileSystemLoader.cs" />
     <Compile Include="Loaders\MemoryLoader.cs" />

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
+using System.Diagnostics;
 
 namespace OpenTKExtensions.Framework
 {
-    public class GameComponentBase : IGameComponent
+    public class GameComponentBase : IGameComponent, ITimedComponent
     {
         protected static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -22,6 +23,15 @@ namespace OpenTKExtensions.Framework
             set;
         }
 
+        private Stopwatch renderTimer = new Stopwatch();
+        private TimeSpan lastRenderTime = TimeSpan.Zero;
+        public TimeSpan LastRenderTime
+        {
+            get
+            {
+                return lastRenderTime;
+            }
+        }
 
         public GameComponentBase()
         {
@@ -110,6 +120,16 @@ namespace OpenTKExtensions.Framework
             }
         }
 
+        public void StartRenderTimer()
+        {
+            renderTimer.Reset();
+            renderTimer.Start();
+        }
 
+        public void StopRenderTimer()
+        {
+            renderTimer.Stop();
+            lastRenderTime = renderTimer.Elapsed;
+        }
     }
 }

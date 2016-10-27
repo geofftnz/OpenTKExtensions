@@ -9,7 +9,7 @@ using OpenTK;
 
 namespace OpenTKExtensions.Components
 {
-    public class FrameCounter : GameComponentBase, IRenderable
+    public class FrameCounter : CompositeGameComponent, IRenderable
     {
         const int BUFLEN = 30;
         private Stopwatch sw = new Stopwatch();
@@ -17,11 +17,13 @@ namespace OpenTKExtensions.Components
         private int bufferPos = 0;
         private long frameCount = 0;
 
-        public bool Visible { get; set; }
-        public int DrawOrder { get; set; }
+        //public bool Visible { get; set; }
+        //public int DrawOrder { get; set; }
 
         private double fpsSmoothed = 0.0;
         private double fpsLowpassAmount = 1.0;
+
+        private TextManager textManager;
 
         private TextBlock textBlock = new TextBlock("fps", "", new Vector3(0.01f, 0.05f, 0.0f), 0.0003f, new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
         public TextBlock TextBlock
@@ -73,10 +75,12 @@ namespace OpenTKExtensions.Components
         }
 
 
-        public FrameCounter()
+        public FrameCounter(Font font)
         {
             this.Visible = true;
-            this.DrawOrder = 0;
+            this.DrawOrder = 1000;
+
+            components.Add(textManager = new TextManager("fps", font));
 
             this.Loading += FrameCounter_Loading;
             
@@ -117,9 +121,12 @@ namespace OpenTKExtensions.Components
             this.fpsSmoothed = f * this.fpsLowpassAmount + (1.0 - this.fpsLowpassAmount) * this.fpsSmoothed;
         }
 
-        public void Render(IFrameRenderData frameData)
+        public override void Render(IFrameRenderData frameData)
         {
             this.Frame();
+            textManager.AddOrUpdate(this.TextBlock);
+            textManager.Render(frameData);
+            
         }
 
         
