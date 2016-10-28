@@ -77,12 +77,12 @@ namespace OpenTKExtensions.Framework
             this.Components.Render(frameData);
         }
 
-        public bool ProcessKeyDown(KeyboardKeyEventArgs e)
+        public virtual bool ProcessKeyDown(KeyboardKeyEventArgs e)
         {
             return this.Components.ProcessKeyDown(e);
         }
 
-        public bool ProcessKeyUp(KeyboardKeyEventArgs e)
+        public virtual bool ProcessKeyUp(KeyboardKeyEventArgs e)
         {
             return this.Components.ProcessKeyUp(e);
         }
