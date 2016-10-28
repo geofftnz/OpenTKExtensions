@@ -8,7 +8,7 @@ using System.Text;
 
 namespace OpenTKExtensions.Input
 {
-    public class KeyboardActionManager : GameComponentBase
+    public class KeyboardActionManager : GameComponentBase, IKeyboardControllable
     {
         private Dictionary<Key, List<Tuple<KeyModifiers, Action>>> keymap = new Dictionary<Key, List<Tuple<KeyModifiers, Action>>>();
 
@@ -49,6 +49,17 @@ namespace OpenTKExtensions.Input
             }
         }
 
+        public bool ProcessKeyDown(KeyboardKeyEventArgs e)
+        {
+            ProcessKeyDown(e.Key, e.Modifiers);
+            return false;
+        }
+
+        public bool ProcessKeyUp(KeyboardKeyEventArgs e)
+        {
+            return false;
+        }
+
         public int Count
         {
             get
@@ -57,5 +68,6 @@ namespace OpenTKExtensions.Input
             }
         }
 
+        public int KeyboardPriority { get; set; } = 0;
     }
 }

@@ -17,18 +17,7 @@ namespace OpenTKExtensions.Framework
         public bool Visible { get; set; } = true;
         public int DrawOrder { get; set; } = 0;
 
-        public int KeyboardPriority
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public int KeyboardPriority { get; set; } = 0;
 
         public CompositeGameComponent()
             : base()
