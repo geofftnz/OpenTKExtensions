@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenTK.Input;
 
 namespace OpenTKExtensions.Framework
 {
-    public class CompositeGameComponent : GameComponentBase, IResizeable, IReloadable, IUpdateable, IRenderable
+    public class CompositeGameComponent : GameComponentBase, IResizeable, IReloadable, IUpdateable, IRenderable, IKeyboardControllable
     {
         protected GameComponentCollection components = new GameComponentCollection();
         public GameComponentCollection Components
@@ -15,6 +16,19 @@ namespace OpenTKExtensions.Framework
 
         public bool Visible { get; set; } = true;
         public int DrawOrder { get; set; } = 0;
+
+        public int KeyboardPriority
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public CompositeGameComponent()
             : base()
@@ -61,6 +75,16 @@ namespace OpenTKExtensions.Framework
         public virtual void Render(IFrameRenderData frameData)
         {
             this.Components.Render(frameData);
+        }
+
+        public bool ProcessKeyDown(KeyboardKeyEventArgs e)
+        {
+            return this.Components.ProcessKeyDown(e);
+        }
+
+        public bool ProcessKeyUp(KeyboardKeyEventArgs e)
+        {
+            return this.Components.ProcessKeyUp(e);
         }
     }
 }

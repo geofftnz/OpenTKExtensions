@@ -69,6 +69,27 @@ namespace OpenTKExtensions.Framework
             this.Add(component);
         }
 
+        public bool ProcessKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
+        {
+            foreach (var component in this.OfType<IKeyboardControllable>().OrderBy(c => c.KeyboardPriority))
+            {
+                if (component.ProcessKeyDown(e))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool ProcessKeyUp(OpenTK.Input.KeyboardKeyEventArgs e)
+        {
+            foreach (var component in this.OfType<IKeyboardControllable>().OrderBy(c => c.KeyboardPriority))
+            {
+                if (component.ProcessKeyUp(e))
+                    return true;
+            }
+            return false;
+        }
+
+
 
     }
 }
