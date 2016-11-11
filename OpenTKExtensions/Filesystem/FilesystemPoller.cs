@@ -31,7 +31,7 @@ namespace OpenTKExtensions.Filesystem
         {
             currentHash =
                 Directory
-                .EnumerateFiles(Path)
+                .EnumerateFiles(Path, @"*.*", SearchOption.AllDirectories)
                 .Select(fn => Directory.GetLastWriteTimeUtc(fn))
                 .Select(d => d.ToBinary() % 0x786789fc42a47)
                 .Sum();
