@@ -8,7 +8,7 @@ namespace OpenTKExtensions
 {
     public interface ISamplerParameter
     {
-        SamplerParameter ParameterName { get; set; }
+        SamplerParameterName ParameterName { get; set; }
         void Apply(uint SamplerID);
     }
 }

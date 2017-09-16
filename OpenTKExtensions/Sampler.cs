@@ -14,8 +14,8 @@ namespace OpenTKExtensions
         public int ID { get; private set; }
         public string Name { get; private set; }
 
-        private Dictionary<SamplerParameter, ISamplerParameter> parameters = new Dictionary<SamplerParameter, ISamplerParameter>();
-        public Dictionary<SamplerParameter, ISamplerParameter> Parameters { get { return this.parameters; } }
+        private Dictionary<SamplerParameterName, ISamplerParameter> parameters = new Dictionary<SamplerParameterName, ISamplerParameter>();
+        public Dictionary<SamplerParameterName, ISamplerParameter> Parameters { get { return this.parameters; } }
 
         public Sampler(string name)
         {
