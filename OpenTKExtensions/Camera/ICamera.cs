@@ -8,7 +8,7 @@ using OpenTKExtensions.Framework;
 
 namespace OpenTKExtensions.Camera
 {
-    public interface ICamera : IUpdateable, IResizeable
+    public interface ICamera : IUpdateable, IResizeable, IGameComponent
     {
         //void Resize(int ClientWidth, int ClientHeight); 
         //void Update(double time);

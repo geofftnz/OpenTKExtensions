@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,7 +90,29 @@ namespace OpenTKExtensions.Framework
             return false;
         }
 
+        public Matrix4 ProjectionMatrix
+        {
+            set
+            {
+                this.Do<ITransformable>(c => c.ProjectionMatrix = value);
+            }
+        }
 
+        public Matrix4 ViewMatrix
+        {
+            set
+            {
+                this.Do<ITransformable>(c => c.ViewMatrix = value);
+            }
+        }
+
+        public Matrix4 ModelMatrix
+        {
+            set
+            {
+                this.Do<ITransformable>(c => c.ModelMatrix = value);
+            }
+        }
 
     }
 }

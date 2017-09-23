@@ -17,6 +17,10 @@ namespace OpenTKExtensions.Components
         private int bufferPos = 0;
         private long frameCount = 0;
 
+        public float TextSize { get { return textBlock.Size; } set { textBlock.Size = value; } }
+        public Vector3 Position { get { return textBlock.Position; } set { textBlock.Position = value; } }
+        public Vector4 Colour { get { return textBlock.Colour; } set { textBlock.Colour = value; } }
+
         //public bool Visible { get; set; }
         //public int DrawOrder { get; set; }
 
@@ -83,7 +87,7 @@ namespace OpenTKExtensions.Components
             components.Add(textManager = new TextManager("fps", font));
 
             this.Loading += FrameCounter_Loading;
-            
+
         }
 
         void FrameCounter_Loading(object sender, EventArgs e)
@@ -126,10 +130,10 @@ namespace OpenTKExtensions.Components
             this.Frame();
             textManager.AddOrUpdate(this.TextBlock);
             textManager.Render(frameData);
-            
+
         }
 
-        
+
 
     }
 }
