@@ -24,7 +24,6 @@ namespace OpenTKExtensions
 
         public static byte[] LoadImage(this string s, out ImageInfo info)
         {
-            byte[] ret;
             var image = (Bitmap)Bitmap.FromFile(s);
 
             info = new ImageInfo();

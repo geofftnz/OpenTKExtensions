@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using System.Drawing;
 using NLog;
 
@@ -198,7 +198,7 @@ namespace OpenTKExtensions
 
             string infoLog = GL.GetProgramInfoLog(this.Handle).TrimEnd();
             int linkStatus;
-            GL.GetProgram(this.Handle, ProgramParameter.LinkStatus, out linkStatus);
+            GL.GetProgram(this.Handle, GetProgramParameterName.LinkStatus, out linkStatus);
 
             if (linkStatus != 1)
             {

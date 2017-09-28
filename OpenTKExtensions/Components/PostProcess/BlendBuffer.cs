@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTKExtensions.Framework;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTKExtensions.Generators;
 
 namespace OpenTKExtensions.Components.PostProcess

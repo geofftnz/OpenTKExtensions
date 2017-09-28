@@ -55,7 +55,7 @@ namespace OpenTKExtensions.Exceptions
 
 
         public string DetailText { get; private set; }
-        public string Source { get; private set; }
+        public new string Source { get; private set; }
         public List<ErrorLine> ErrorLines { get; private set; }
         public string DetailedError
         {

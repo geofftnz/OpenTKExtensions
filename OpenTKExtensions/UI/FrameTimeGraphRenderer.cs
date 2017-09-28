@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 
 namespace OpenTKExtensions.UI
 {
@@ -76,7 +76,7 @@ namespace OpenTKExtensions.UI
         {
             vertexVBO = new VBO("frametime-vertex");
             colourVBO = new VBO("frametime-colour");
-            indexVBO = new VBO("frametime-index", OpenTK.Graphics.OpenGL.BufferTarget.ElementArrayBuffer);
+            indexVBO = new VBO("frametime-index", BufferTarget.ElementArrayBuffer);
             shaderProgram = new ShaderProgram("frametime-program");
         }
 

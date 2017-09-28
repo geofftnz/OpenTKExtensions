@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using NLog;
 using OpenTK;
 
@@ -310,11 +310,11 @@ namespace OpenTKExtensions
             }
             // create & bind depth texture
             this.DepthTexture = new Texture(this.Width, this.Height, TextureTarget.Texture2D, PixelInternalFormat.DepthComponent32, PixelFormat.DepthComponent, PixelType.Float);
-            this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp));
-            this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp));
+            this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge));
+            this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge));
             this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest));
             this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest));
-            this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.DepthTextureMode, (int)All.Intensity));
+            //this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.DepthTextureMode, (int)All.Intensity));
             this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureCompareMode, (int)TextureCompareMode.None));
             this.DepthTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureCompareFunc, (int)All.None));
             this.DepthTexture.Init();

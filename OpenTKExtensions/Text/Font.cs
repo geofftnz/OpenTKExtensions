@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK;
 using NLog;
 using OpenTKExtensions.Framework;
@@ -31,7 +31,6 @@ namespace OpenTKExtensions.Text
     */
     public class Font : GameComponentBase, ITextRenderer
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
 
         const int MAXCHARS = 4000;
         const int NUMVERTICES = MAXCHARS * 4;
@@ -324,8 +323,8 @@ namespace OpenTKExtensions.Text
             this.sdfTexture = new Texture(this.Name + "_tex", info.Width, info.Height, TextureTarget.Texture2D, PixelInternalFormat.Alpha, PixelFormat.Alpha, PixelType.UnsignedByte);
             this.sdfTexture.SetParameter(new TextureParameterInt(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear))
                 .SetParameter(new TextureParameterInt(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear))
-                .SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp))
-                .SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp))
+                .SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge))
+                .SetParameter(new TextureParameterInt(TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge))
                 .Upload(data);
             this.sdfTexture.Bind();
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
@@ -335,14 +334,14 @@ namespace OpenTKExtensions.Text
             log.Trace("Font {0} texture loaded, resolution {1}x{2}", this.Name, this.TexWidth, this.TexHeight);
         }
 
-        public void Unload()
+        /*public void Unload()
         {
             if (this.sdfTexture != null && IsTextureLoaded)
             {
                 this.sdfTexture.Unload();
                 this.IsTextureLoaded = false;
             }
-        }
+        }*/
 
         public void InitIndexVBO()
         {
