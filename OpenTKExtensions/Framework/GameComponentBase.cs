@@ -11,12 +11,7 @@ namespace OpenTKExtensions.Framework
     {
         protected static Logger log = LogManager.GetCurrentClassLogger();
 
-        public ComponentStatus Status
-        {
-            get;
-            protected set;
-        }
-
+        public ComponentStatus Status { get; protected set; } = ComponentStatus.New;
         public int LoadOrder
         {
             get;
@@ -33,9 +28,10 @@ namespace OpenTKExtensions.Framework
             }
         }
 
+        public ResourceCollection Resources { get; } = new ResourceCollection();
+
         public GameComponentBase()
         {
-            this.Status = ComponentStatus.New;
         }
 
         /// <summary>
@@ -53,6 +49,7 @@ namespace OpenTKExtensions.Framework
 
             this.Status = ComponentStatus.Loading;
             this.OnLoading(EventArgs.Empty);
+            this.Resources.Load();
             this.Status = ComponentStatus.Loaded;
             this.OnLoaded(EventArgs.Empty);
 
@@ -71,6 +68,7 @@ namespace OpenTKExtensions.Framework
 
             this.Status = ComponentStatus.Unloading;
             this.OnUnloading(EventArgs.Empty);
+            this.Resources.Unload();
             this.Status = ComponentStatus.Unloaded;
             log.Info("GameComponentBase.Unload({0}) unloaded", this.GetType().Name);
         }
@@ -85,10 +83,7 @@ namespace OpenTKExtensions.Framework
 
         public virtual void OnLoading(EventArgs e)
         {
-            if (this.Loading != null)
-            {
-                this.Loading(this, e);
-            }
+            this.Loading?.Invoke(this, e);
         }
 
         /// <summary>
@@ -99,10 +94,7 @@ namespace OpenTKExtensions.Framework
 
         public virtual void OnUnloading(EventArgs e)
         {
-            if (this.Unloading != null)
-            {
-                this.Unloading(this, e);
-            }
+            this.Unloading?.Invoke(this, e);
         }
 
         /// <summary>
@@ -112,10 +104,7 @@ namespace OpenTKExtensions.Framework
 
         public virtual void OnLoaded(EventArgs e)
         {
-            if (this.Loaded != null)
-            {
-                this.Loaded(this, e);
-            }
+            this.Loaded?.Invoke(this, e);
         }
 
         public void StartRenderTimer()

@@ -8,7 +8,7 @@ using OpenTK;
 
 namespace OpenTKExtensions
 {
-    public class GBuffer
+    public class GBuffer : IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -165,10 +165,12 @@ namespace OpenTKExtensions
         public string Name { get; private set; }
         public bool WantDepth { get; set; }
 
-        public GBuffer(string name, bool wantDepth)
+        public GBuffer(string name, bool wantDepth, int width, int height)
         {
             this.Name = name;
             this.WantDepth = wantDepth;
+            this.Width = width;
+            this.Height = height;
             this.FBO = new FrameBuffer(this.Name + "_GBuffer");
 
             for (int i = 0; i < MAXSLOTS; i++)
@@ -177,15 +179,30 @@ namespace OpenTKExtensions
             }
         }
 
+        public GBuffer(string name, bool wantDepth)
+            : this(name, wantDepth, 256, 256)
+        {
+        }
+
         public GBuffer(string name)
             : this(name, true)
         {
-
         }
+
         public GBuffer()
             : this("unnamed")
         {
 
+        }
+
+        public void Load()
+        {
+            this.Init(this.Width, this.Height);
+        }
+
+        public void Unload()
+        {
+            this.UnloadAndDestroyAllTextures();
         }
 
         public GBuffer SetSlot(int slot, TextureSlotParam texparam)
@@ -404,6 +421,5 @@ namespace OpenTKExtensions
         {
             this.FBO.ClearColourBuffer(drawBuffer, colour);
         }
-
     }
 }

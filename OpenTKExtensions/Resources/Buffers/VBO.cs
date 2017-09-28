@@ -10,7 +10,7 @@ using NLog;
 
 namespace OpenTKExtensions
 {
-    public class VBO
+    public class VBO : IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -76,6 +76,18 @@ namespace OpenTKExtensions
             : this(name, BufferTarget.ArrayBuffer)
         {
         }
+
+        public void Load()
+        {
+            Init();
+        }
+
+        public void Unload()
+        {
+            if (Handle != -1)
+                GL.DeleteBuffer(Handle);
+        }
+
 
         public int Init()
         {
@@ -180,7 +192,7 @@ namespace OpenTKExtensions
                 throw new InvalidOperationException(s);
             }
 
-            var ptr =  GL.MapBuffer(this.Target, access);
+            var ptr = GL.MapBuffer(this.Target, access);
             this.Mapped = true;
             return ptr;
         }
@@ -194,8 +206,6 @@ namespace OpenTKExtensions
             GL.UnmapBuffer(this.Target);
             this.Mapped = false;
         }
-
-
 
     }
 }

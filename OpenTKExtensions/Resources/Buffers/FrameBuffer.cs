@@ -9,7 +9,7 @@ using NLog;
 
 namespace OpenTKExtensions
 {
-    public class FrameBuffer
+    public class FrameBuffer : IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -32,6 +32,11 @@ namespace OpenTKExtensions
         public FrameBuffer()
             : this("unnamed")
         {
+        }
+
+        public void Load()
+        {
+            Init();
         }
 
         public int Init()

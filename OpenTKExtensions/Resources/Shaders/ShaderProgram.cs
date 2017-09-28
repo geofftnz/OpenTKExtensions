@@ -10,14 +10,14 @@ using NLog;
 
 namespace OpenTKExtensions
 {
-    public class ShaderProgram
+    public class ShaderProgram : IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
         private static IShaderLoader _defaultLoader = null;
         public static IShaderLoader DefaultLoader
         {
-            get { return _defaultLoader;  }
+            get { return _defaultLoader; }
             set { _defaultLoader = value; }
         }
 
@@ -42,7 +42,7 @@ namespace OpenTKExtensions
 
         private Dictionary<int, string> fragDataLocation = new Dictionary<int, string>();
         public Dictionary<int, string> FragDataLocation { get { return this.fragDataLocation; } }
-        
+
 
         public ShaderProgram(string name)
         {
@@ -54,6 +54,12 @@ namespace OpenTKExtensions
             : this("unnamed")
         {
 
+        }
+
+
+        public void Load()
+        {
+            Create();
         }
 
         public ShaderProgram Create()
@@ -139,7 +145,7 @@ namespace OpenTKExtensions
             {
                 return location;
             }
-            
+
             throw new InvalidOperationException(string.Format("Shader Program {0} could not find variable {1}", this.Name, name));
         }
 

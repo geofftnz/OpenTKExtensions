@@ -9,7 +9,7 @@ using NLog;
 
 namespace OpenTKExtensions
 {
-    public class Texture
+    public class Texture : IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -53,6 +53,11 @@ namespace OpenTKExtensions
                 this.Parameters.Add(param.ParameterName, param);
             }
             return this;
+        }
+
+        public void Load()
+        {
+            Init();
         }
 
         public int Init()
@@ -109,7 +114,7 @@ namespace OpenTKExtensions
             }
         }
 
-        public void UploadZero<T>(int channels) where T:struct
+        public void UploadZero<T>(int channels) where T : struct
         {
             if (Init() != -1)
             {
@@ -252,7 +257,6 @@ namespace OpenTKExtensions
 
             return data;
         }
-
 
     }
 }

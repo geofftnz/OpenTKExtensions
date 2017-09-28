@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace OpenTKExtensions
 {
-    public class Sampler
+    public class Sampler : IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -25,6 +25,16 @@ namespace OpenTKExtensions
         public Sampler()
             : this("unnamed")
         {
+        }
+
+        public void Load()
+        {
+            Init();
+        }
+
+        public void Unload()
+        {
+            Delete();
         }
 
         public int Init()
@@ -89,5 +99,6 @@ namespace OpenTKExtensions
         {
             Unbind(textureUnit - TextureUnit.Texture0);
         }
+
     }
 }
