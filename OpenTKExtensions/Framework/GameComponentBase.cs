@@ -49,7 +49,6 @@ namespace OpenTKExtensions.Framework
             {
                 log.Info("GameComponentBase.Load({0}) already loaded", this.GetType().Name);
                 return;
-                //throw new InvalidOperationException("Component was not in a valid state to load.");
             }
 
             this.Status = ComponentStatus.Loading;
@@ -68,7 +67,6 @@ namespace OpenTKExtensions.Framework
             {
                 log.Info("GameComponentBase.Unload({0}) already unloaded", this.GetType().Name);
                 return;
-                //throw new InvalidOperationException("Component was not in a valid state to unload.");
             }
 
             this.Status = ComponentStatus.Unloading;
