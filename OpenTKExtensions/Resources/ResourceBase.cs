@@ -9,6 +9,15 @@ namespace OpenTKExtensions.Resources
     {
         public string Name { get; protected set; }
 
+        public ResourceBase(string name)
+        {
+            this.Name = name;
+        }
+
+        public ResourceBase() : this("UnamedResource")
+        {
+        }
+
         public event EventHandler<EventArgs> ReadyForContent;
         protected void OnReadyForContent(EventArgs e)
         {

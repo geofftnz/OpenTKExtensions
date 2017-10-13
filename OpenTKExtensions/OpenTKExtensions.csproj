@@ -82,6 +82,7 @@
     <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\ResourceBase.cs" />
     <Compile Include="Resources\ResourceCollection.cs" />
+    <Compile Include="Resources\Shaders\Shader.cs" />
     <Compile Include="Resources\Textures\Texture.cs" />
     <Compile Include="Text\FontCharacter.cs" />
     <Compile Include="Text\FontMetaParser.cs" />
@@ -141,7 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DynamicLoader\" />
-    <Folder Include="Resources\Shaders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
