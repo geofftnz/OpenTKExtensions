@@ -8,7 +8,7 @@ using OpenTK;
 
 namespace OpenTKExtensions
 {
-    public class GBuffer : IResource
+    public class GBuffer
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 

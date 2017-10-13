@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NLog;
 using System.Diagnostics;
+using OpenTKExtensions.Resources;
 
 namespace OpenTKExtensions.Framework
 {

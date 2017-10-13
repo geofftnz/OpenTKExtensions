@@ -10,7 +10,7 @@ using NLog;
 
 namespace OpenTKExtensions
 {
-    public class VBO : IResource
+    public class VBO 
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 

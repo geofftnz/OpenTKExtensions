@@ -10,7 +10,7 @@ using NLog;
 
 namespace OpenTKExtensions
 {
-    public class ShaderProgram : IResource
+    public class ShaderProgram 
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -27,7 +27,7 @@ namespace OpenTKExtensions
 
         private List<Shader> shaders = new List<Shader>();
         public List<Shader> Shaders
-        {
+        { 
             get
             {
                 return this.shaders;

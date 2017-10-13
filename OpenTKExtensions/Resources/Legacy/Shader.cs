@@ -10,7 +10,7 @@ using OpenTKExtensions.Exceptions;
 
 namespace OpenTKExtensions
 {
-    public class Shader : IResource
+    public class Shader
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 

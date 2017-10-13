@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace OpenTKExtensions
 {
-    public class Sampler : IResource
+    public class Sampler 
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 

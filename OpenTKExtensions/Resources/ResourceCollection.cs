@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources
 {
-    public class ResourceCollection : Dictionary<string, IResource>, IDictionary<string, IResource>, IResource
+    public class ResourceCollection : Dictionary<string, IResource>, IDictionary<string, IResource>
     {
         public ResourceCollection()
         {

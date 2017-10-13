@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenTKExtensions</RootNamespace>
     <AssemblyName>OpenTKExtensions</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -46,7 +47,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -77,11 +78,14 @@
     <Compile Include="Loaders\MultiPathFileSystemLoader.cs" />
     <Compile Include="Loaders\MemoryLoader.cs" />
     <Compile Include="Loaders\ShaderLoaderBase.cs" />
+    <Compile Include="Resources\Buffers\VertexBuffer.cs" />
     <Compile Include="Resources\IResource.cs" />
+    <Compile Include="Resources\ResourceBase.cs" />
     <Compile Include="Resources\ResourceCollection.cs" />
+    <Compile Include="Resources\Textures\Texture.cs" />
     <Compile Include="Text\FontCharacter.cs" />
     <Compile Include="Text\FontMetaParser.cs" />
-    <Compile Include="Resources\Buffers\FrameBuffer.cs" />
+    <Compile Include="Resources\Legacy\FrameBuffer.cs" />
     <Compile Include="Framework\CompositeGameComponent.cs" />
     <Compile Include="Framework\GameComponentBase.cs" />
     <Compile Include="Framework\GameComponentCollection.cs" />
@@ -96,7 +100,7 @@
     <Compile Include="Framework\IResizeable.cs" />
     <Compile Include="Framework\IUpdateable.cs" />
     <Compile Include="Framework\ReloadResult.cs" />
-    <Compile Include="Resources\Buffers\GBuffer.cs" />
+    <Compile Include="Resources\Legacy\GBuffer.cs" />
     <Compile Include="GBufferCombiner.cs" />
     <Compile Include="GBufferRedirectableShaderStep.cs" />
     <Compile Include="GBufferShaderStep.cs" />
@@ -115,19 +119,19 @@
     <Compile Include="Loaders\SourceContent.cs" />
     <Compile Include="Loaders\SourceName.cs" />
     <Compile Include="RenderInfo.cs" />
-    <Compile Include="Resources\Textures\Sampler.cs" />
-    <Compile Include="Resources\Textures\SamplerParameter.cs" />
-    <Compile Include="Resources\Shaders\Shader.cs" />
-    <Compile Include="Resources\Shaders\ShaderProgram.cs" />
-    <Compile Include="Resources\Shaders\ShaderReloader.cs" />
+    <Compile Include="Resources\Legacy\Sampler.cs" />
+    <Compile Include="Resources\Legacy\SamplerParameter.cs" />
+    <Compile Include="Resources\Legacy\Shader.cs" />
+    <Compile Include="Resources\Legacy\ShaderProgram.cs" />
+    <Compile Include="Resources\Legacy\ShaderReloader.cs" />
     <Compile Include="Text\TextBlock.cs" />
     <Compile Include="Text\TextManager.cs" />
-    <Compile Include="Resources\Textures\Texture.cs" />
-    <Compile Include="Resources\Textures\TextureParameter.cs" />
+    <Compile Include="Resources\Legacy\Texture.cs" />
+    <Compile Include="Resources\Legacy\TextureParameter.cs" />
     <Compile Include="UI\FrameTimeGraphRenderer.cs" />
     <Compile Include="Variable.cs" />
-    <Compile Include="Resources\Buffers\VBO.cs" />
-    <Compile Include="Resources\Buffers\VBOExtensions.cs" />
+    <Compile Include="Resources\Legacy\VBO.cs" />
+    <Compile Include="Resources\Legacy\VBOExtensions.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DynamicLoader\" />
+    <Folder Include="Resources\Shaders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

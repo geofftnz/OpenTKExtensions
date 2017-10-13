@@ -1,32 +1,34 @@
-﻿using NLog;
-using OpenTK;
-using OpenTK.Graphics.OpenGL4;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL4;
+using NLog;
 
-namespace OpenTKExtensions.Resources
+namespace OpenTKExtensions
 {
-    public class Texture : ResourceBase, IResource
+    public class Texture 
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
-        public int ID { get; protected set; } = -1;
+        public int ID { get; private set; }
         public TextureTarget Target { get; private set; }
         public PixelInternalFormat InternalFormat { get; private set; }
         public PixelFormat Format { get; set; }
         public PixelType Type { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public bool IsLoaded { get { return ID != -1; } }
+        public string Name { get; set; }
 
-        public Dictionary<TextureParameterName, ITextureParameter> Parameters { get; } = new Dictionary<TextureParameterName, ITextureParameter>();
+        private Dictionary<TextureParameterName, ITextureParameter> parameters = new Dictionary<TextureParameterName, ITextureParameter>();
+        public Dictionary<TextureParameterName, ITextureParameter> Parameters { get { return this.parameters; } }
 
         public Texture(string name, int width, int height, TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type)
         {
             this.Name = name;
+            this.ID = -1;
             this.Target = target;
             this.InternalFormat = internalFormat;
             this.Width = width;
@@ -38,32 +40,6 @@ namespace OpenTKExtensions.Resources
         public Texture(int width, int height, TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type)
             : this("unnamed", width, height, target, internalFormat, format, type)
         {
-        }
-
-
-        public void Load()
-        {
-            if (!IsLoaded)
-            {
-                ID = GL.GenTexture();
-
-                if (!GL.IsTexture(ID))
-                    throw new Exception($"Texture.Load ({Name}) generated texture ID {ID} is not a texture");
-
-                log.Trace($"Texture.Load ({Name}) generated texture ID {ID}");
-                OnReadyForContent();
-            }
-        }
-
-        public void Unload()
-        {
-            if (IsLoaded)
-            {
-                GL.DeleteTexture(ID);
-                log.Trace($"Texture.Unload ({Name}) deleted texture ID {ID}");
-                ID = -1;
-                OnUnloaded();
-            }
         }
 
         public Texture SetParameter(ITextureParameter param)
@@ -79,75 +55,94 @@ namespace OpenTKExtensions.Resources
             return this;
         }
 
-        public void Resize(int width, int height)
+        public void Load()
         {
-            this.Width = width;
-            this.Height = height;
+            Init();
         }
 
+        public int Init()
+        {
+            if (this.ID == -1)
+            {
+                this.ID = GL.GenTexture();
+                log.Trace("Texture.GenerateID ({0}) returned {1}", this.Name, this.ID);
+            }
+            return this.ID;
+        }
 
         public void ApplyParameters()
         {
-            foreach (var param in Parameters.Values)
+            foreach (var param in this.Parameters.Values)
             {
-                param.Apply(Target);
+                param.Apply(this.Target);
             }
-        }
-
-        private void EnsureLoaded([CallerMemberName] string caller = null)
-        {
-            if (!IsLoaded)
-                throw new InvalidOperationException($"Texture.{caller}({Name}): Not loaded");
         }
 
         public Texture Bind()
         {
-            EnsureLoaded();
-            GL.BindTexture(this.Target, this.ID);
+            if (Init() != -1)
+            {
+                GL.BindTexture(this.Target, this.ID);
+            }
             return this;
         }
 
         public Texture Bind(TextureUnit unit)
         {
-            EnsureLoaded();
             GL.ActiveTexture(unit);
-            Bind();
+            this.Bind();
             return this;
         }
 
         public void Upload<T>(T[] data) where T : struct
         {
-            Bind();
-            ApplyParameters();
-            UploadImage(data);
+            if (Init() != -1)
+            {
+                this.Bind();
+                this.ApplyParameters();
+                this.UploadImage(data);
+            }
         }
 
         public void Upload<T>(T[] data, int level) where T : struct
         {
-            Bind();
-            ApplyParameters();
-            UploadImage(data, level);
+            if (Init() != -1)
+            {
+                this.Bind();
+                this.ApplyParameters();
+                this.UploadImage(data, level);
+            }
         }
 
         public void UploadZero<T>(int channels) where T : struct
         {
-            int length = this.Width * this.Height * channels;
-            var data = new T[length];
-            Upload(data);
+            if (Init() != -1)
+            {
+                int length = this.Width * this.Height * channels;
+                var data = new T[length];
+
+                this.Upload(data);
+            }
         }
 
         public void UploadEmpty()
         {
-            Bind();
-            ApplyParameters();
-            GL.TexImage2D(this.Target, 0, this.InternalFormat, this.Width, this.Height, 0, this.Format, this.Type, IntPtr.Zero);
+            if (Init() != -1)
+            {
+                this.Bind();
+                this.ApplyParameters();
+                GL.TexImage2D(this.Target, 0, this.InternalFormat, this.Width, this.Height, 0, this.Format, this.Type, IntPtr.Zero);
+            }
         }
 
         public void UploadEmpty(TextureTarget target)
         {
-            Bind();
-            ApplyParameters();
-            GL.TexImage2D(target, 0, this.InternalFormat, this.Width, this.Height, 0, this.Format, this.Type, IntPtr.Zero);
+            if (Init() != -1)
+            {
+                this.Bind();
+                this.ApplyParameters();
+                GL.TexImage2D(target, 0, this.InternalFormat, this.Width, this.Height, 0, this.Format, this.Type, IntPtr.Zero);
+            }
         }
 
         public void UploadImage<T>(TextureTarget target, T[] data) where T : struct
@@ -195,14 +190,32 @@ namespace OpenTKExtensions.Resources
             log.Trace("Texture.RefreshImage ({0}) uploaded {1} texels of {2}", this.Name, data.Length, data.GetType().Name);
         }
 
-        public void RefreshImage(VertexBuffer buffer)
+        public void RefreshImage(VBO buffer)
         {
             log.Trace("Texture.RefreshImage ({0}) uploading from buffer...", this.Name);
             buffer.Bind();
             this.Bind();
             GL.TexSubImage2D(this.Target, 0, 0, 0, this.Width, this.Height, this.Format, this.Type, (IntPtr)IntPtr.Zero);
+            //buffer.Unbind();
             log.Trace("Texture.RefreshImage ({0}) uploaded", this.Name);
         }
+
+        public void Unload()
+        {
+            if (this.ID != -1)
+            {
+                GL.DeleteTexture(this.ID);
+                this.ID = -1;
+            }
+        }
+
+        public void Resize(int width, int height)
+        {
+            this.Width = width;
+            this.Height = height;
+        }
+
+
 
         public int GetLevelWidth(int level)
         {
@@ -222,8 +235,7 @@ namespace OpenTKExtensions.Resources
 
         public float[] GetLevelDataFloat(int level)
         {
-            Bind();
-
+            this.Bind();
             int width = this.GetLevelWidth(level);
             int height = this.GetLevelHeight(level);
 
@@ -236,8 +248,6 @@ namespace OpenTKExtensions.Resources
 
         public Vector4[] GetLevelDataVector4(int level)
         {
-            Bind();
-
             int width = this.GetLevelWidth(level);
             int height = this.GetLevelHeight(level);
 
@@ -247,5 +257,6 @@ namespace OpenTKExtensions.Resources
 
             return data;
         }
+
     }
 }
