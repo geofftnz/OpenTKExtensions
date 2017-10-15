@@ -83,6 +83,7 @@
     <Compile Include="Resources\ResourceBase.cs" />
     <Compile Include="Resources\ResourceCollection.cs" />
     <Compile Include="Resources\Shaders\Shader.cs" />
+    <Compile Include="Resources\Shaders\ShaderProgram.cs" />
     <Compile Include="Resources\Textures\Texture.cs" />
     <Compile Include="Text\FontCharacter.cs" />
     <Compile Include="Text\FontMetaParser.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageLoader.cs" />
+    <Compile Include="Image\ImageLoader.cs" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>

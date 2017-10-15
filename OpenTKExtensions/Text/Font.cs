@@ -7,6 +7,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK;
 using NLog;
 using OpenTKExtensions.Framework;
+using OpenTKExtensions.Image;
 
 namespace OpenTKExtensions.Text
 {

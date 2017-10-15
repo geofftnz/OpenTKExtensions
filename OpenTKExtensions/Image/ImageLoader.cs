@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using OpenTK.Graphics.OpenGL4;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Image
 {
     public static class ImageLoader
     {
@@ -13,7 +14,38 @@ namespace OpenTKExtensions
         {
             public int Width;
             public int Height;
+            public int Channels;
             public System.Drawing.Imaging.PixelFormat PixelFormat;
+        }
+
+        /// <summary>
+        /// Loads an image from a file into a newly-created texture.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static Resources.Texture LoadImageToTexture(this string fileName, TextureTarget target = TextureTarget.Texture2D, PixelInternalFormat internalFormat = PixelInternalFormat.Rgb, PixelFormat pixelFormat = PixelFormat.Rgb, PixelType pixelType = PixelType.UnsignedByte)
+        {
+            ImageInfo info;
+            var imageData = fileName.LoadImage(out info);
+
+            Resources.Texture tex = new Resources.Texture(info.Width, info.Height, target, internalFormat, pixelFormat, pixelType);
+            tex
+                .Set(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear)
+                .Set(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear)
+                .Set(TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge)
+                .Set(TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+
+            tex.ReadyForContent += (s, e) =>
+            {
+                tex.Upload(imageData);
+            };
+
+            return tex;
+        }
+
+        public static Resources.Texture LoadImageToTextureRgba(this string filename)
+        {
+            return filename.LoadImageToTexture(TextureTarget.Texture2D, PixelInternalFormat.Rgba, PixelFormat.Rgba, PixelType.UnsignedByte);
         }
 
         public static byte[] LoadImage(this string s)
@@ -30,13 +62,16 @@ namespace OpenTKExtensions
             info.Width = image.Width;
             info.Height = image.Height;
             info.PixelFormat = image.PixelFormat;
+            info.Channels = 3;
 
             switch (image.PixelFormat)
             {
-                case System.Drawing.Imaging.PixelFormat.Alpha:
-                    break;
+                //case System.Drawing.Imaging.PixelFormat.Alpha:
+                //    break;
                 case System.Drawing.Imaging.PixelFormat.Canonical:
+                    info.Channels = 4;
                     return GetImageBytesRGBA32(image);
+                    /*
                 case System.Drawing.Imaging.PixelFormat.DontCare:
                     break;
                 case System.Drawing.Imaging.PixelFormat.Extended:
@@ -50,16 +85,19 @@ namespace OpenTKExtensions
                 case System.Drawing.Imaging.PixelFormat.Format16bppRgb565:
                     break;
                 case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-                    break;
+                    break;*/
                 case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
                     return GetImageBytesRGB24(image);
                 case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
+                    info.Channels = 4;
                     return GetImageBytesRGBA32(image);
                 case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
+                    info.Channels = 4;
                     return GetImageBytesRGBA32(image);
                 case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
+                    info.Channels = 4;
                     return GetImageBytesRGBA32(image);
-                case System.Drawing.Imaging.PixelFormat.Format48bppRgb:
+                /*case System.Drawing.Imaging.PixelFormat.Format48bppRgb:
                     break;
                 case System.Drawing.Imaging.PixelFormat.Format4bppIndexed:
                     break;
@@ -76,13 +114,12 @@ namespace OpenTKExtensions
                 case System.Drawing.Imaging.PixelFormat.Max:
                     break;
                 case System.Drawing.Imaging.PixelFormat.PAlpha:
-                    break;
+                    break;*/
                 default:
-                    break;
+                    throw new InvalidOperationException("Unsupported image format: " + image.PixelFormat);
             }
 
 
-            throw new InvalidOperationException("Unsupported image format: " + image.PixelFormat);
         }
 
         private static byte[] GetImageBytesRGB24(Bitmap image)
@@ -147,7 +184,8 @@ namespace OpenTKExtensions
 
         public static byte[] ExtractChannelFromRGBA(this byte[] input, int channelIndex)
         {
-            if (channelIndex<0||channelIndex>3){
+            if (channelIndex < 0 || channelIndex > 3)
+            {
                 throw new InvalidOperationException("channelIndex must be between 0 and 3");
             }
 

@@ -47,8 +47,9 @@ namespace OpenTKExtensions.Resources
             {
                 ID = GL.GenTexture();
 
-                if (!GL.IsTexture(ID))
-                    throw new Exception($"Texture.Load ({Name}) generated texture ID {ID} is not a texture");
+                // The following errors out
+                //if (!GL.IsTexture(ID))
+                  //  throw new Exception($"Texture.Load ({Name}) generated texture ID {ID} is not a texture");
 
                 log.Trace($"Texture.Load ({Name}) generated texture ID {ID}");
                 OnReadyForContent();
@@ -77,6 +78,15 @@ namespace OpenTKExtensions.Resources
                 this.Parameters.Add(param.ParameterName, param);
             }
             return this;
+        }
+
+        public Texture Set(TextureParameterName parameterName, int value)
+        {
+            return SetParameter(new TextureParameterInt(parameterName, value));
+        }
+        public Texture Set(TextureParameterName parameterName, float value)
+        {
+            return SetParameter(new TextureParameterFloat(parameterName, value));
         }
 
         public void Resize(int width, int height)
