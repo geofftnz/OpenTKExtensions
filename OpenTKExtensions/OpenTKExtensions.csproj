@@ -82,6 +82,7 @@
     <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\ResourceBase.cs" />
     <Compile Include="Resources\ResourceCollection.cs" />
+    <Compile Include="Resources\Shaders\ReloadableShaderProgram.cs" />
     <Compile Include="Resources\Shaders\Shader.cs" />
     <Compile Include="Resources\Shaders\ShaderProgram.cs" />
     <Compile Include="Resources\Textures\Texture.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="Resources\Legacy\Texture.cs" />
     <Compile Include="Resources\Legacy\TextureParameter.cs" />
     <Compile Include="UI\FrameTimeGraphRenderer.cs" />
-    <Compile Include="Variable.cs" />
+    <Compile Include="Resources\Legacy\Variable.cs" />
     <Compile Include="Resources\Legacy\VBO.cs" />
     <Compile Include="Resources\Legacy\VBOExtensions.cs" />
     <Compile Include="Vector.cs" />

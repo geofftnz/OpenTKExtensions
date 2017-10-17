@@ -1,6 +1,7 @@
 ﻿using NLog;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using OpenTKExtensions.Loaders;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,7 @@ namespace OpenTKExtensions.Resources
     public class ShaderProgram : ResourceBase, IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
+        public static IShaderLoader DefaultLoader { get; set; } = null;
 
         public int Handle { get; private set; } = 0;
         public string Log { get; private set; }
@@ -32,6 +34,30 @@ namespace OpenTKExtensions.Resources
             foreach (var shader in shaders)
                 AddShader(shader);
         }
+
+        public ShaderProgram(string name, string vertexSourceOrFilename, string fragmentSourceOrFilename, string variables, string fragmentOutputs = null) : base(name)
+        {
+            IShaderLoader loader = DefaultLoader;
+            if (loader == null)
+            {
+                loader = new MemoryLoader();
+
+                (loader as MemoryLoader).Add("vert", vertexSourceOrFilename);
+                vertexSourceOrFilename = "vert";
+
+                (loader as MemoryLoader).Add("frag", fragmentSourceOrFilename);
+                fragmentSourceOrFilename = "frag";
+            }
+
+            AddShader(new Shader(name + "_vert", ShaderType.VertexShader, loader.Load(vertexSourceOrFilename).Content));
+            AddShader(new Shader(name + "_frag", ShaderType.FragmentShader, loader.Load(fragmentSourceOrFilename).Content));
+            SetVariables(variables);
+            if (!string.IsNullOrWhiteSpace(fragmentOutputs))
+                SetFragmentOutputs(fragmentOutputs);
+        }
+
+        // TODO: subclass that loads from files
+        // TODO: clone & reload shaderprogram via IReloadableResource (returns a clone if successful)
 
 
 
@@ -129,27 +155,60 @@ namespace OpenTKExtensions.Resources
 
         public ShaderProgram AddVariable(int index, string name)
         {
-            if (VariableLocations.ContainsKey(name))
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                VariableLocations[name] = index;
-            }
-            else
-            {
-                VariableLocations.Add(name, index);
+                if (VariableLocations.ContainsKey(name))
+                {
+                    VariableLocations[name] = index;
+                }
+                else
+                {
+                    VariableLocations.Add(name, index);
+                }
             }
             return this;
         }
+        public ShaderProgram SetVariables(params string[] variables)
+        {
+            VariableLocations.Clear();
+
+            // if we've only been passed a single string and it contains commas, then split it.
+            if (variables.Length == 1 && variables[0].Contains(","))
+                return SetVariables(variables[0].Split(','));
+
+            for (int i = 0; i < variables.Length; i++)
+                AddVariable(i, variables[i]);
+
+            return this;
+        }
+
 
         public ShaderProgram AddFragmentShaderOutput(int colourIndex, string name)
         {
-            if (FragDataLocation.ContainsKey(colourIndex))
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                FragDataLocation[colourIndex] = name;
+                if (FragDataLocation.ContainsKey(colourIndex))
+                {
+                    FragDataLocation[colourIndex] = name;
+                }
+                else
+                {
+                    FragDataLocation.Add(colourIndex, name);
+                }
             }
-            else
-            {
-                FragDataLocation.Add(colourIndex, name);
-            }
+            return this;
+        }
+        public ShaderProgram SetFragmentOutputs(params string[] fragmentOutputs)
+        {
+            FragDataLocation.Clear();
+
+            // if we've only been passed a single string and it contains commas, then split it.
+            if (fragmentOutputs.Length == 1 && fragmentOutputs[0].Contains(","))
+                return SetVariables(fragmentOutputs[0].Split(','));
+
+            for (int i = 0; i < fragmentOutputs.Length; i++)
+                AddFragmentShaderOutput(i, fragmentOutputs[i]);
+
             return this;
         }
 

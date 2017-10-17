@@ -28,6 +28,19 @@ namespace OpenTKExtensions.Resources
             }
         }
 
+        private string GetNextKey()
+        {
+            // TODO: what if this key has already been added?
+            return $"__res_{Count:00000}";
+        }
+
+        public string Add(IResource resource)
+        {
+            string key = GetNextKey();
+            Add(key, resource);
+            return key;
+        }
+
         public T Get<T>(string name) where T : class
         {
             IResource value;
