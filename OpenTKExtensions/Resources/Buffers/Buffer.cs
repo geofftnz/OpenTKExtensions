@@ -10,7 +10,7 @@ using OpenTK;
 namespace OpenTKExtensions.Resources
 {
     //TODO: make this into a generic class, accepting an array on construction, or fire the ReadyForContent event if null.
-    public class VertexBuffer : ResourceBase, IResource
+    public class Buffer<T> : ResourceBase, IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -54,28 +54,29 @@ namespace OpenTKExtensions.Resources
             }
         }
 
+        private T[] InitialData;
 
-
-        public VertexBuffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        public Buffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw, T[] initialData = null)
         {
             this.Name = name;
             this.Target = target;
             this.UsageHint = usageHint;
+            this.InitialData = initialData;
         }
 
-        public static VertexBuffer CreateVertexBuffer(string name)
+        public static Buffer<T> CreateVertexBuffer(string name, T[] initialData = null)
         {
-            return new VertexBuffer(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw);
+            return new Buffer<T>(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw, initialData);
         }
-        public static VertexBuffer CreateIndexBuffer(string name)
+        public static Buffer<T> CreateIndexBuffer(string name, T[] initialData = null)
         {
-            return new VertexBuffer(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
+            return new Buffer<T>(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw, initialData);
         }
 
         private void EnsureLoaded([CallerMemberName] string caller = null)
         {
             if (!IsLoaded)
-                throw new InvalidOperationException($"VertexBuffer.{caller}({Name}): Not loaded");
+                throw new InvalidOperationException($"Buffer.{caller}({Name}): Not loaded");
         }
 
 
@@ -85,10 +86,24 @@ namespace OpenTKExtensions.Resources
             {
                 GL.GenBuffers(1, out handle);
 
-                if (!GL.IsBuffer(handle))
-                    throw new Exception($"VertexBuffer.Load ({Name}): Handle {Handle} is not a buffer");
+                //if (!GL.IsBuffer(handle))
+                    //throw new Exception($"Buffer.Load ({Name}): Handle {Handle} is not a buffer");
 
-                log.Trace($"VertexBuffer.Load ({Name}): Handle is {Handle}");
+                log.Trace($"Buffer.Load ({Name}): Handle is {Handle}");
+
+                if (InitialData != null)
+                {
+                    // HACK: Attempt to load data using known types
+                    SetData(InitialData as Vector4[]);
+                    SetData(InitialData as Vector3[]);
+                    SetData(InitialData as Vector2[]);
+                    SetData(InitialData as uint[]);
+                    SetData(InitialData as byte[]);
+                    SetData(InitialData as float[]);
+
+                    // discard data after load.
+                    InitialData = null;
+                }
 
                 OnReadyForContent();
             }
@@ -106,10 +121,13 @@ namespace OpenTKExtensions.Resources
             }
         }
 
-        public void SetData<T>(T[] data, int elementSizeInBytes, VertexAttribPointerType pointerType, int fieldsPerElement) where T : struct
+        public void SetData<TT>(TT[] data, int elementSizeInBytes, VertexAttribPointerType pointerType, int fieldsPerElement) where TT : struct
         {
+            if (data == null)
+                return;  // silently fail
+
             EnsureLoaded();
-            log.Trace($"VertexBuffer.SetData ({Name}): Loading...");
+            log.Trace($"Buffer.SetData ({Name}): Loading...");
 
             GL.BindBuffer(this.Target, this.Handle);
 
@@ -119,10 +137,10 @@ namespace OpenTKExtensions.Resources
             this.pointerType = pointerType;
             this.fieldsPerElement = fieldsPerElement;
 
-            GL.BufferData<T>(this.Target, new IntPtr(arraySize), data, this.UsageHint);
+            GL.BufferData<TT>(this.Target, new IntPtr(arraySize), data, this.UsageHint);
             this.HasData = true;
             GL.BindBuffer(this.Target, 0);
-            log.Trace($"VertexBuffer.SetData ({Name}): Loaded {data.Length} elements, {arraySize} bytes");
+            log.Trace($"Buffer.SetData ({Name}): Loaded {data.Length} elements, {arraySize} bytes");
         }
 
         public void SetData(Vector4[] data)
@@ -185,7 +203,7 @@ namespace OpenTKExtensions.Resources
         {
             if (!IsMapped)
             {
-                log.Warn("VBO.Unmap ({0}): buffer not mapped", this.Name);
+                log.Warn($"Buffer.Unmap ({Name}): Buffer not mapped");
             }
             GL.UnmapBuffer(this.Target);
             IsMapped = false;

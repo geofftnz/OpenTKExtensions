@@ -45,7 +45,7 @@ namespace OpenTKExtensions.Resources
             return key;
         }
 
-        public T Get<T>(string name) where T : class
+        public T Get<T>(string name) where T : class, IResource
         {
             IResource value;
 

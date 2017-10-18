@@ -205,7 +205,7 @@ namespace OpenTKExtensions.Resources
             log.Trace("Texture.RefreshImage ({0}) uploaded {1} texels of {2}", this.Name, data.Length, data.GetType().Name);
         }
 
-        public void RefreshImage(VertexBuffer buffer)
+        public void RefreshImage<T>(Buffer<T> buffer)
         {
             log.Trace("Texture.RefreshImage ({0}) uploading from buffer...", this.Name);
             buffer.Bind();

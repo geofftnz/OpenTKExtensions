@@ -28,7 +28,7 @@ namespace OpenTKExtensions.Image
             ImageInfo info;
             var imageData = fileName.LoadImage(out info);
 
-            Resources.Texture tex = new Resources.Texture(info.Width, info.Height, target, internalFormat, pixelFormat, pixelType);
+            Resources.Texture tex = new Resources.Texture(fileName, info.Width, info.Height, target, internalFormat, pixelFormat, pixelType);
             tex
                 .Set(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear)
                 .Set(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear)
@@ -71,21 +71,21 @@ namespace OpenTKExtensions.Image
                 case System.Drawing.Imaging.PixelFormat.Canonical:
                     info.Channels = 4;
                     return GetImageBytesRGBA32(image);
-                    /*
-                case System.Drawing.Imaging.PixelFormat.DontCare:
-                    break;
-                case System.Drawing.Imaging.PixelFormat.Extended:
-                    break;
-                case System.Drawing.Imaging.PixelFormat.Format16bppArgb1555:
-                    break;
-                case System.Drawing.Imaging.PixelFormat.Format16bppGrayScale:
-                    break;
-                case System.Drawing.Imaging.PixelFormat.Format16bppRgb555:
-                    break;
-                case System.Drawing.Imaging.PixelFormat.Format16bppRgb565:
-                    break;
-                case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-                    break;*/
+                /*
+            case System.Drawing.Imaging.PixelFormat.DontCare:
+                break;
+            case System.Drawing.Imaging.PixelFormat.Extended:
+                break;
+            case System.Drawing.Imaging.PixelFormat.Format16bppArgb1555:
+                break;
+            case System.Drawing.Imaging.PixelFormat.Format16bppGrayScale:
+                break;
+            case System.Drawing.Imaging.PixelFormat.Format16bppRgb555:
+                break;
+            case System.Drawing.Imaging.PixelFormat.Format16bppRgb565:
+                break;
+            case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
+                break;*/
                 case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
                     return GetImageBytesRGB24(image);
                 case System.Drawing.Imaging.PixelFormat.Format32bppArgb:

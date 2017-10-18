@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +8,14 @@ namespace OpenTKExtensions.Resources
 {
     public abstract class ResourceBase
     {
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
         public string Name { get; protected set; }
 
         public ResourceBase(string name)
         {
-            this.Name = name;
+            log.Info($"Resource({GetType().Name}).ctor({name})");
+            this.Name = name;            
         }
 
         public ResourceBase() : this("UnamedResource")
