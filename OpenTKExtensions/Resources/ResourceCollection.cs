@@ -36,7 +36,11 @@ namespace OpenTKExtensions.Resources
 
         public string Add(IResource resource)
         {
-            string key = GetNextKey();
+            string key = resource.Name;
+            
+            if (ContainsKey(key))
+                key = GetNextKey();
+
             Add(key, resource);
             return key;
         }

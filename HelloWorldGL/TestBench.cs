@@ -11,7 +11,7 @@ namespace HelloWorldGL
 {
     public class TestBench : GameWindow
     {
-        private const string SHADERPATH = @"../../Resources/Shaders;../../../Particulate/Resources/Shaders;Resources/Shaders";
+        private const string SHADERPATH = @"../../Resources/Shaders;Resources/Shaders";
 
         private GameComponentCollection components = new GameComponentCollection();
         //private MultiPathFileSystemPoller shaderUpdatePoller = new MultiPathFileSystemPoller(SHADERPATH.Split(';'));
@@ -35,6 +35,10 @@ namespace HelloWorldGL
                 )
         {
             VSync = VSyncMode.Off;
+
+            // set static loader
+            OpenTKExtensions.Resources.ShaderProgram.DefaultLoader = new OpenTKExtensions.Loaders.MultiPathFileSystemLoader(SHADERPATH);
+
 
             Load += TestBench_Load;
             Unload += TestBench_Unload;

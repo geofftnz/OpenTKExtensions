@@ -9,6 +9,7 @@ using OpenTK;
 
 namespace OpenTKExtensions.Resources
 {
+    //TODO: make this into a generic class, accepting an array on construction, or fire the ReadyForContent event if null.
     public class VertexBuffer : ResourceBase, IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
@@ -55,11 +56,20 @@ namespace OpenTKExtensions.Resources
 
 
 
-        public VertexBuffer(string name, BufferTarget target, BufferUsageHint usageHint)
+        public VertexBuffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
         {
             this.Name = name;
             this.Target = target;
             this.UsageHint = usageHint;
+        }
+
+        public static VertexBuffer CreateVertexBuffer(string name)
+        {
+            return new VertexBuffer(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw);
+        }
+        public static VertexBuffer CreateIndexBuffer(string name)
+        {
+            return new VertexBuffer(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
         }
 
         private void EnsureLoaded([CallerMemberName] string caller = null)
