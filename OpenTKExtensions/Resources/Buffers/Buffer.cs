@@ -9,7 +9,6 @@ using OpenTK;
 
 namespace OpenTKExtensions.Resources
 {
-    //TODO: make this into a generic class, accepting an array on construction, or fire the ReadyForContent event if null.
     public class Buffer<T> : ResourceBase, IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
@@ -87,7 +86,7 @@ namespace OpenTKExtensions.Resources
                 GL.GenBuffers(1, out handle);
 
                 //if (!GL.IsBuffer(handle))
-                    //throw new Exception($"Buffer.Load ({Name}): Handle {Handle} is not a buffer");
+                //throw new Exception($"Buffer.Load ({Name}): Handle {Handle} is not a buffer");
 
                 log.Trace($"Buffer.Load ({Name}): Handle is {Handle}");
 
@@ -207,6 +206,23 @@ namespace OpenTKExtensions.Resources
             }
             GL.UnmapBuffer(this.Target);
             IsMapped = false;
+        }
+    }
+
+    public class Buffer : Buffer<object>, IResource
+    {
+        public Buffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+            : base(name, target, usageHint, null)
+        {
+        }
+
+        public static Buffer CreateVertexBuffer(string name)
+        {
+            return new Buffer(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw);
+        }
+        public static Buffer CreateIndexBuffer(string name)
+        {
+            return new Buffer(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
         }
 
     }
