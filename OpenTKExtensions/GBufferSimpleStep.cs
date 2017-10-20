@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTK.Graphics.OpenGL4;
 using OpenTKExtensions.Framework;
+using OpenTKExtensions.Resources.Old;
 
 namespace OpenTKExtensions
 {

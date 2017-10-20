@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class Variable:Tuple<int,string>
     {

@@ -5,7 +5,7 @@ using System.Text;
 using NLog;
 using OpenTK.Graphics.OpenGL4;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class Sampler 
     {

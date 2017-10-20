@@ -4,7 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using NLog;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class ShaderProgram 
     {

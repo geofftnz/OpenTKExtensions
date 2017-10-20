@@ -8,7 +8,7 @@ using OpenTK.Graphics.OpenGL4;
 using NLog;
 using OpenTKExtensions.Exceptions;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class Shader
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenTK.Graphics.OpenGL4;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class TextureParameterInt : ITextureParameter 
     {

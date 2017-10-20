@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using NLog;
 using OpenTK;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class GBuffer
     {

@@ -8,6 +8,7 @@ using OpenTK;
 using NLog;
 using OpenTKExtensions.Framework;
 using OpenTKExtensions.Image;
+using OpenTKExtensions.Resources.Old;
 
 namespace OpenTKExtensions.Text
 {

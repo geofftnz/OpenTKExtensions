@@ -5,7 +5,7 @@ using System.Text;
 using NLog;
 using OpenTKExtensions.Framework;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public static class ShaderReloader
     {

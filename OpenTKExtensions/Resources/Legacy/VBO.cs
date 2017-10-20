@@ -8,7 +8,7 @@ using OpenTK.Graphics.OpenGL4;
 using System.Drawing;
 using NLog;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class VBO 
     {

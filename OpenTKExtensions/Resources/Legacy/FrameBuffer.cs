@@ -7,7 +7,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using NLog;
 
-namespace OpenTKExtensions
+namespace OpenTKExtensions.Resources.Old
 {
     public class FrameBuffer
     {

@@ -5,6 +5,7 @@ using System.Text;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK;
 using NLog;
+using OpenTKExtensions.Resources.Old;
 
 namespace OpenTKExtensions
 {

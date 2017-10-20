@@ -6,6 +6,7 @@ using OpenTKExtensions.Framework;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using OpenTKExtensions.Generators;
+using OpenTKExtensions.Resources.Old;
 
 namespace OpenTKExtensions.Components.PostProcess
 {
