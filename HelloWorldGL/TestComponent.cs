@@ -16,11 +16,16 @@ namespace HelloWorldGL
         public int DrawOrder { get; set; } = 0;
         public bool Visible { get; set; } = true;
 
+        private ShaderProgram shader;
+        private Buffer<Vector3> vertexBuffer;
+        private Buffer<uint> indexBuffer;
+        private Texture tex1;
 
         public TestComponent()
         {
-            Resources.Add("tex1", @"Resources/Textures/tex1.png".LoadImageToTextureRgba());
-            Resources.Add(new OpenTKExtensions.Resources.ShaderProgram(
+            Resources.Add("tex1", tex1 = @"Resources/Textures/tex1.png".LoadImageToTextureRgba());
+
+            Resources.Add(shader = new OpenTKExtensions.Resources.ShaderProgram(
                 "p1",
                 "testshader.glsl|vert",
                 "testshader.glsl|frag",
