@@ -52,11 +52,19 @@ namespace OpenTKExtensions.Resources
                 if (newResource == null)
                     throw new InvalidOperationException($"ReloadableResource.TryReload: Reload returned null.");
 
-                newResource.Load();
+                if (!ReferenceEquals(Resource, newResource))
+                {
+                    log.Info($"ReloadableResource.TryReload new object created for {Name}...");
+                    newResource.Load();
+                    Resource.Unload();
+                    Resource = newResource;
+                }
+                else
+                {
+                    log.Info($"ReloadableResource.TryReload in-place reload of {Name}...");
+                }
 
-                Resource.Unload();
-                Resource = newResource;
-                message = $"{Resource.Name} reloaded.";
+                message = $"ReloadableResource.TryReload {Resource.Name} reloaded.";
                 return true;
             }
             catch (ShaderCompileException ex)
