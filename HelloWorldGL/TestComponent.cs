@@ -32,8 +32,8 @@ namespace HelloWorldGL
                 "vertex"
                 ));
 
-            Resources.Add(OpenTKExtensions.Resources.Buffer<Vector3>.CreateVertexBuffer("vbuf", ScreenTri.Vertices().ToArray()));
-            Resources.Add(OpenTKExtensions.Resources.Buffer<uint>.CreateIndexBuffer("ibuf", ScreenTri.Indices().ToArray()));
+            Resources.Add(vertexBuffer = OpenTKExtensions.Resources.Buffer<Vector3>.CreateVertexBuffer("vbuf", ScreenTri.Vertices().ToArray()));
+            Resources.Add(indexBuffer = OpenTKExtensions.Resources.Buffer<uint>.CreateIndexBuffer("ibuf", ScreenTri.Indices().ToArray()));
 
             ModelMatrix = Matrix4.CreateTranslation(0.0f, 0.0f, -0.1f);
             ProjectionMatrix = Matrix4.CreateOrthographicOffCenter(0.0f, 1.0f, 0.0f,1.0f, 0.001f, 2.0f);
@@ -48,19 +48,14 @@ namespace HelloWorldGL
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            var shader = Resources.Get<ShaderProgram>("p1");
-            var vbuf = Resources.Get<Buffer<Vector3>>("vbuf");
-            var ibuf = Resources.Get<Buffer<uint>>("ibuf");
-
-
             shader.Use()
                 .SetUniform("projectionMatrix", ProjectionMatrix)
                 .SetUniform("modelMatrix", ModelMatrix)
                 .SetUniform("viewMatrix", ViewMatrix);
 
-            vbuf.Bind(shader.VariableLocations["vertex"]);
-            ibuf.Bind();
-            GL.DrawElements(BeginMode.Triangles, ibuf.Length, DrawElementsType.UnsignedInt, 0);
+            vertexBuffer.Bind(shader.VariableLocations["vertex"]);
+            indexBuffer.Bind();
+            GL.DrawElements(BeginMode.Triangles, indexBuffer.Length, DrawElementsType.UnsignedInt, 0);
 
         }
     }
