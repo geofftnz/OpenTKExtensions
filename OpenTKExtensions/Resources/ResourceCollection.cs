@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,8 @@ namespace OpenTKExtensions.Resources
 {
     public class ResourceCollection : Dictionary<string, IResource>, IDictionary<string, IResource>
     {
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
         public ResourceCollection()
         {
 
@@ -28,6 +31,23 @@ namespace OpenTKExtensions.Resources
             }
         }
 
+        public void Reload()
+        {
+            string message;
+
+            foreach (var resource in this.Values.OfType<IReloadableResource>())
+            {
+                if (resource.TryReload(out message))
+                {
+                    log.Info(() => message);
+                }
+                else
+                {
+                    log.Error(() => message);
+                }
+            }
+        }
+
         private string GetNextKey()
         {
             // TODO: what if this key has already been added?
@@ -37,7 +57,7 @@ namespace OpenTKExtensions.Resources
         public string Add(IResource resource)
         {
             string key = resource.Name;
-            
+
             if (ContainsKey(key))
                 key = GetNextKey();
 

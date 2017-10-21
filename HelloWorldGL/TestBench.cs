@@ -14,7 +14,7 @@ namespace HelloWorldGL
         private const string SHADERPATH = @"../../Resources/Shaders;Resources/Shaders";
 
         private GameComponentCollection components = new GameComponentCollection();
-        //private MultiPathFileSystemPoller shaderUpdatePoller = new MultiPathFileSystemPoller(SHADERPATH.Split(';'));
+        private MultiPathFileSystemPoller shaderUpdatePoller = new MultiPathFileSystemPoller(SHADERPATH.Split(';'));
         //private double lastShaderPollTime = 0.0;
         private Stopwatch timer = new Stopwatch();
 
@@ -63,6 +63,14 @@ namespace HelloWorldGL
 
         private void TestBench_RenderFrame(object sender, FrameEventArgs e)
         {
+            if (shaderUpdatePoller.Poll())
+            {
+                components.Reload();
+                shaderUpdatePoller.Reset();
+            }
+
+
+
             GL.ClearColor(0.0f, 0.1f, 0.2f, 1.0f);
             GL.ClearDepth(1.0);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

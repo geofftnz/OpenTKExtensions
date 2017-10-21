@@ -79,10 +79,11 @@
     <Compile Include="Loaders\MemoryLoader.cs" />
     <Compile Include="Loaders\ShaderLoaderBase.cs" />
     <Compile Include="Resources\Buffers\Buffer.cs" />
+    <Compile Include="Resources\IReloadableResource.cs" />
     <Compile Include="Resources\IResource.cs" />
+    <Compile Include="Resources\ReloadableResource.cs" />
     <Compile Include="Resources\ResourceBase.cs" />
     <Compile Include="Resources\ResourceCollection.cs" />
-    <Compile Include="Resources\Shaders\ReloadableShaderProgram.cs" />
     <Compile Include="Resources\Shaders\Shader.cs" />
     <Compile Include="Resources\Shaders\ShaderProgram.cs" />
     <Compile Include="Resources\Textures\Texture.cs" />

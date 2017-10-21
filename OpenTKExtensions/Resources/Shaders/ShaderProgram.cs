@@ -27,34 +27,96 @@ namespace OpenTKExtensions.Resources
         public Dictionary<int, string> FragDataLocation { get; } = new Dictionary<int, string>();
         public Dictionary<string, int> UniformLocations { get; } = new Dictionary<string, int>();
 
+        public bool UsingFilenames { get; private set; } = false;
+        public List<Tuple<ShaderType, string>> ShaderSourceOrFilenames { get; } = new List<Tuple<ShaderType, string>>();
+
         public bool IsLoaded { get { return Handle > 0; } }
 
-        public ShaderProgram(string name, params Shader[] shaders) : base(name)
+        public ShaderProgram(string name, string variables, string fragmentOutputs, params Shader[] shaders) : base(name)
         {
+            SetVariables(variables);
+            SetFragmentOutputs(fragmentOutputs);
+
             foreach (var shader in shaders)
                 AddShader(shader);
         }
 
-        public ShaderProgram(string name, string vertexSourceOrFilename, string fragmentSourceOrFilename, string variables, string fragmentOutputs = null) : base(name)
+        public ShaderProgram(string name, string variables, string fragmentOutputs, bool usingFilenames, params Tuple<ShaderType, string>[] shaderSourceOrFilenames) : base(name)
         {
-            IShaderLoader loader = DefaultLoader;
-            if (loader == null)
+            UsingFilenames = usingFilenames;
+
+            SetVariables(variables);
+            SetFragmentOutputs(fragmentOutputs);
+
+            foreach (var shaderFilename in shaderSourceOrFilenames)
             {
-                loader = new MemoryLoader();
-
-                (loader as MemoryLoader).Add("vert", vertexSourceOrFilename);
-                vertexSourceOrFilename = "vert";
-
-                (loader as MemoryLoader).Add("frag", fragmentSourceOrFilename);
-                fragmentSourceOrFilename = "frag";
+                ShaderSourceOrFilenames.Add(shaderFilename);
             }
 
-            AddShader(new Shader(name + "_vert", ShaderType.VertexShader, loader.Load(vertexSourceOrFilename).Content));
-            AddShader(new Shader(name + "_frag", ShaderType.FragmentShader, loader.Load(fragmentSourceOrFilename).Content));
-            SetVariables(variables);
-            if (!string.IsNullOrWhiteSpace(fragmentOutputs))
-                SetFragmentOutputs(fragmentOutputs);
+            if (UsingFilenames)
+                InitFromFiles();
+            else
+                InitFromSource();
+
         }
+
+        public ShaderProgram(string name, string variables, string fragmentOutputs, bool usingFilenames, string vertexFilename, string fragmentFilename) : this(name, variables, fragmentOutputs, usingFilenames, new Tuple<ShaderType, string>(ShaderType.VertexShader, vertexFilename), new Tuple<ShaderType, string>(ShaderType.FragmentShader, fragmentFilename))
+        {
+        }
+
+        public ShaderProgram(ShaderProgram cloneFrom)
+        {
+            if (cloneFrom == null)
+                throw new ArgumentNullException(nameof(cloneFrom));
+
+            if (cloneFrom.ShaderSourceOrFilenames.Count == 0)
+                throw new InvalidOperationException($"ShaderProgram: cannot clone from {cloneFrom.Name} due to insufficient shader information");
+
+            Name = cloneFrom.Name;
+
+            foreach(var v in cloneFrom.VariableLocations)
+            {
+                VariableLocations.Add(v.Key, v.Value);
+            }
+
+            foreach(var f in cloneFrom.FragDataLocation)
+            {
+                FragDataLocation.Add(f.Key, f.Value);
+            }
+
+            UsingFilenames = cloneFrom.UsingFilenames;
+            foreach(var s in cloneFrom.ShaderSourceOrFilenames)
+            {
+                ShaderSourceOrFilenames.Add(s);
+            }
+
+            if (UsingFilenames)
+                InitFromFiles();
+            else
+                InitFromSource();
+        }
+
+
+        private void InitFromFiles()
+        {
+            IShaderLoader loader = DefaultLoader ?? new FileSystemLoader();
+
+            foreach (var s in ShaderSourceOrFilenames)
+            {
+                AddShader(new Shader(Name + "_" + s.Item1.ToString(), s.Item1, loader.Load(s.Item2).Content));
+            }
+        }
+
+        private void InitFromSource()
+        {
+            foreach (var s in ShaderSourceOrFilenames)
+            {
+                AddShader(new Shader(Name + "_" + s.Item1.ToString(), s.Item1, s.Item2));
+            }
+        }
+
+
+        //, params Tuple<ShaderType, string>[] shaderFilenames
 
         // TODO: subclass that loads from files
         // TODO: clone & reload shaderprogram via IReloadableResource (returns a clone if successful)
@@ -172,6 +234,10 @@ namespace OpenTKExtensions.Resources
         {
             VariableLocations.Clear();
 
+            if (variables == null || variables.Length == 0)
+                return this;
+
+
             // if we've only been passed a single string and it contains commas, then split it.
             if (variables.Length == 1 && variables[0].Contains(","))
                 return SetVariables(variables[0].Split(','));
@@ -201,6 +267,9 @@ namespace OpenTKExtensions.Resources
         public ShaderProgram SetFragmentOutputs(params string[] fragmentOutputs)
         {
             FragDataLocation.Clear();
+
+            if (fragmentOutputs == null || fragmentOutputs.Length == 0)
+                return this;
 
             // if we've only been passed a single string and it contains commas, then split it.
             if (fragmentOutputs.Length == 1 && fragmentOutputs[0].Contains(","))

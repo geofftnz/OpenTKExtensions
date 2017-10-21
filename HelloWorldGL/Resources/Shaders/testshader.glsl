@@ -22,5 +22,10 @@ layout (location = 0) out vec4 out_Colour;
 void main(void)
 {
 	vec3 col = vec3(0.5) + pos * 0.5;
+
+	col.b = 0.6;
+
+	col = pow(col,vec3(1.0 / 2.2));
+
 	out_Colour = vec4(col,1.0);
 }

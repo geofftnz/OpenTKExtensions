@@ -55,12 +55,11 @@ namespace OpenTKExtensions.Resources
 
         private T[] InitialData;
 
-        public Buffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw, T[] initialData = null)
+        public Buffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw, T[] initialData = null) : base(name)
         {
-            this.Name = name;
-            this.Target = target;
-            this.UsageHint = usageHint;
-            this.InitialData = initialData;
+            Target = target;
+            UsageHint = usageHint;
+            InitialData = initialData;
         }
 
         public static Buffer<T> CreateVertexBuffer(string name, T[] initialData = null)
