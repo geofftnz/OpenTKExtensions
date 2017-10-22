@@ -90,7 +90,9 @@
     <Compile Include="Resources\ResourceCollection.cs" />
     <Compile Include="Resources\Shaders\Shader.cs" />
     <Compile Include="Resources\Shaders\ShaderProgram.cs" />
+    <Compile Include="Resources\Textures\Sampler.cs" />
     <Compile Include="Resources\Textures\Texture.cs" />
+    <Compile Include="Resources\Textures\SamplerParameter.cs" />
     <Compile Include="Resources\Textures\TextureParameter.cs" />
     <Compile Include="Text\FontCharacter.cs" />
     <Compile Include="Text\FontMetaParser.cs" />
