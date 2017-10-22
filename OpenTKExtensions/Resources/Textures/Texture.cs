@@ -1,7 +1,7 @@
 ﻿using NLog;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using OpenTKExtensions.Resources.Old;
+//using OpenTKExtensions.Resources.Old;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +50,7 @@ namespace OpenTKExtensions.Resources
 
                 // The following errors out
                 //if (!GL.IsTexture(ID))
-                  //  throw new Exception($"Texture.Load ({Name}) generated texture ID {ID} is not a texture");
+                //  throw new Exception($"Texture.Load ({Name}) generated texture ID {ID} is not a texture");
 
                 log.Trace($"Texture.Load ({Name}) generated texture ID {ID}");
                 OnReadyForContent();
@@ -81,13 +81,9 @@ namespace OpenTKExtensions.Resources
             return this;
         }
 
-        public Texture Set(TextureParameterName parameterName, int value)
+        public Texture Set<T>(TextureParameterName parameterName, T value) where T : struct, IConvertible
         {
-            return SetParameter(new TextureParameterInt(parameterName, value));
-        }
-        public Texture Set(TextureParameterName parameterName, float value)
-        {
-            return SetParameter(new TextureParameterFloat(parameterName, value));
+            return SetParameter(new TextureParameter<T>(parameterName, value));
         }
 
         public void Resize(int width, int height)

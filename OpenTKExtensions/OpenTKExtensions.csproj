@@ -80,6 +80,9 @@
     <Compile Include="Loaders\ShaderLoaderBase.cs" />
     <Compile Include="Resources\Buffers\Buffer.cs" />
     <Compile Include="Resources\FrameBuffer\FrameBuffer.cs" />
+    <Compile Include="Resources\FrameBuffer\GBuffer.cs" />
+    <Compile Include="Resources\FrameBuffer\TextureSlot.cs" />
+    <Compile Include="Resources\FrameBuffer\TextureSlotParam.cs" />
     <Compile Include="Resources\IReloadableResource.cs" />
     <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\ReloadableResource.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="Resources\Shaders\Shader.cs" />
     <Compile Include="Resources\Shaders\ShaderProgram.cs" />
     <Compile Include="Resources\Textures\Texture.cs" />
+    <Compile Include="Resources\Textures\TextureParameter.cs" />
     <Compile Include="Text\FontCharacter.cs" />
     <Compile Include="Text\FontMetaParser.cs" />
     <Compile Include="Resources\Legacy\FrameBuffer.cs" />

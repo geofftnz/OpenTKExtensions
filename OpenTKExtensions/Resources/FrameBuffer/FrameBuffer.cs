@@ -67,6 +67,16 @@ namespace OpenTKExtensions.Resources
             GL.BindFramebuffer(target, ID);
         }
 
+        public void Unbind()
+        {
+            Unbind(Target);
+        }
+        public void Unbind(FramebufferTarget target)
+        {
+            GL.BindFramebuffer(target, 0);
+        }
+
+
         public FramebufferErrorCode GetStatus()
         {
             Status = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
