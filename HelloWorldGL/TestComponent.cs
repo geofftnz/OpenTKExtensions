@@ -51,10 +51,13 @@ namespace HelloWorldGL
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
+            tex1.Bind(TextureUnit.Texture0);
+
             shader.Resource.Use()
                 .SetUniform("projectionMatrix", ProjectionMatrix)
                 .SetUniform("modelMatrix", ModelMatrix)
-                .SetUniform("viewMatrix", ViewMatrix);
+                .SetUniform("viewMatrix", ViewMatrix)
+                .SetUniform("tex1", 0);
 
             vertexBuffer.Bind(shader.Resource.VariableLocations["vertex"]);
             indexBuffer.Bind();

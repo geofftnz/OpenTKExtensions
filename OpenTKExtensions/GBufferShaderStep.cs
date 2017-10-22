@@ -28,9 +28,9 @@ namespace OpenTKExtensions
             }
             public TextureSlot(string name, Texture tex, TextureTarget target)
             {
-                this.Name = name;
-                this.Texture = tex;
-                this.Target = target;
+                Name = name;
+                Texture = tex;
+                Target = target;
             }
             public TextureSlot(string name, Texture tex)
                 : this(name, tex, TextureTarget.Texture2D)
@@ -66,11 +66,11 @@ namespace OpenTKExtensions
         }
         public GBufferShaderStep(string name)
         {
-            this.Name = name;
-            this.vertexVBO = new VBO(this.Name + "_v");
-            this.indexVBO = new VBO(this.Name + "_i", BufferTarget.ElementArrayBuffer);
-            this.gbuffer = new GBuffer(this.Name + "_gb", false);
-            this.program = new ShaderProgram(this.Name + "_sp");
+            Name = name;
+            vertexVBO = new VBO(Name + "_v");
+            indexVBO = new VBO(Name + "_i", BufferTarget.ElementArrayBuffer);
+            gbuffer = new GBuffer(Name + "_gb", false);
+            program = new ShaderProgram(Name + "_sp");
         }
 
         public void SetOutputTexture(int slot, string name, Texture tex, TextureTarget target)
@@ -79,7 +79,7 @@ namespace OpenTKExtensions
             {
                 throw new ArgumentOutOfRangeException("slot");
             }
-            this.textureSlot[slot] = new TextureSlot(name, tex, target);
+            textureSlot[slot] = new TextureSlot(name, tex, target);
         }
 
         public void SetOutputTexture(int slot, string name, Texture tex)
@@ -93,53 +93,44 @@ namespace OpenTKExtensions
             {
                 throw new ArgumentOutOfRangeException("slot");
             }
-            this.textureSlot[slot] = null;
+            textureSlot[slot] = null;
         }
 
         public void Init(string vertexShaderSource, string fragmentShaderSource)
         {
-            this.InitVBOs();
-            this.InitGBuffer();
-            this.InitShader(vertexShaderSource, fragmentShaderSource);
+            InitVBOs();
+            InitGBuffer();
+            InitShader(vertexShaderSource, fragmentShaderSource);
 
         }
 
         public virtual void Render(Action textureBinds, Action<ShaderProgram> setUniforms)
         {
-            this.Render(textureBinds, setUniforms, () =>
+            Render(textureBinds, setUniforms, () =>
             {
-                this.vertexVBO.Bind(this.program.VariableLocation("vertex"));
-                this.indexVBO.Bind();
-                GL.DrawElements(BeginMode.Triangles, this.indexVBO.Length, DrawElementsType.UnsignedInt, 0);
+                vertexVBO.Bind(program.VariableLocation("vertex"));
+                indexVBO.Bind();
+                GL.DrawElements(BeginMode.Triangles, indexVBO.Length, DrawElementsType.UnsignedInt, 0);
             });
         }
 
         public virtual void Render(Action textureBinds, Action<ShaderProgram> setUniforms, Action renderAction)
         {
             // start gbuffer
-            this.gbuffer.BindForWriting();
+            gbuffer.BindForWriting();
 
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
 
-            if (textureBinds != null)
-            {
-                textureBinds();
-            }
+            textureBinds?.Invoke();
 
-            this.program.UseProgram();
+            program.UseProgram();
 
-            if (setUniforms != null)
-            {
-                setUniforms(this.program);
-            }
+            setUniforms?.Invoke(program);
 
-            if (renderAction != null)
-            {
-                renderAction();
-            }
+            renderAction?.Invoke();
 
-            this.gbuffer.UnbindFromWriting();
+            gbuffer.UnbindFromWriting();
         }
 
 
@@ -165,7 +156,7 @@ namespace OpenTKExtensions
                 { 
                     new Variable(0, "vertex")
                 },
-                this.textureSlot.Where(ts => ts != null).Select(ts => ts.Name).ToArray()
+                textureSlot.Where(ts => ts != null).Select(ts => ts.Name).ToArray()
                 );
 
             return program;
@@ -182,11 +173,11 @@ namespace OpenTKExtensions
                     throw new InvalidOperationException("ReloadShader() returned null, but didn't throw an exception");
                 }
 
-                if (this.program != null)
+                if (program != null)
                 {
-                    this.program.Unload();
+                    program.Unload();
                 }
-                this.program = p;
+                program = p;
                 return true;
             }
             catch (Exception ex)
@@ -202,23 +193,23 @@ namespace OpenTKExtensions
 
         protected virtual void InitGBuffer()
         {
-            if (!this.textureSlot.Any(ts => ts != null && ts.Texture != null))
+            if (!textureSlot.Any(ts => ts != null && ts.Texture != null))
             {
                 throw new InvalidOperationException("No texture slots filled");
             }
 
             // find first texture slot, set width and height
-            int width = this.textureSlot.Where(ts => ts != null && ts.Texture != null).FirstOrDefault().Texture.Width;
-            int height = this.textureSlot.Where(ts => ts != null && ts.Texture != null).FirstOrDefault().Texture.Height;
+            int width = textureSlot.Where(ts => ts != null && ts.Texture != null).FirstOrDefault().Texture.Width;
+            int height = textureSlot.Where(ts => ts != null && ts.Texture != null).FirstOrDefault().Texture.Height;
 
             //gbuffer.SetSlot(0, outputTexture);
             for (int slot = 0; slot < MAXSLOTS; slot++)
             {
-                if (this.textureSlot[slot] != null)
+                if (textureSlot[slot] != null)
                 {
-                    if (this.textureSlot[slot].Texture != null)
+                    if (textureSlot[slot].Texture != null)
                     {
-                        gbuffer.SetSlot(slot, this.textureSlot[slot].Texture);
+                        gbuffer.SetSlot(slot, textureSlot[slot].Texture);
                     }
                 }
 
@@ -237,8 +228,8 @@ namespace OpenTKExtensions
                                 0,1,2
                             };
 
-            this.vertexVBO.SetData(vertex);
-            this.indexVBO.SetData(index);
+            vertexVBO.SetData(vertex);
+            indexVBO.SetData(index);
         }
 
         private void InitVBOsq()
@@ -254,18 +245,18 @@ namespace OpenTKExtensions
                                 1,3,2
                             };
 
-            this.vertexVBO.SetData(vertex);
-            this.indexVBO.SetData(index);
+            vertexVBO.SetData(vertex);
+            indexVBO.SetData(index);
         }
 
         public void ClearColourBuffer(int drawBuffer, Vector4 colour)
         {
-            this.gbuffer.ClearColourBuffer(drawBuffer, colour);
+            gbuffer.ClearColourBuffer(drawBuffer, colour);
         }
 
         public int ShaderVariableLocation(string name)
         {
-            return this.program.VariableLocation(name);
+            return program.VariableLocation(name);
         }
 
     }
