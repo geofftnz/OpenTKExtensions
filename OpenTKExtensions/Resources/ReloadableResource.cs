@@ -34,12 +34,12 @@ namespace OpenTKExtensions.Resources
 
         public void Load()
         {
-            Resource.Load();
+            Resource?.Load();
         }
 
         public void Unload()
         {
-            Resource.Unload();
+            Resource?.Unload();
         }
 
         public bool TryReload(out string message)

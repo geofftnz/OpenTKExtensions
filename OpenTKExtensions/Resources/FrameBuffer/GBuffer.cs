@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace OpenTKExtensions.Resources
 {
+    /// <summary>
+    /// GBuffer - a framebuffer & collection of textures used for render-to-texture and MRT.
+    /// </summary>
     public class GBuffer : ResourceBase, IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();

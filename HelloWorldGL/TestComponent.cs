@@ -18,8 +18,8 @@ namespace HelloWorldGL
         public bool Visible { get; set; } = true;
 
         private ReloadableResource<ShaderProgram> shader;
-        private Buffer<Vector3> vertexBuffer;
-        private Buffer<uint> indexBuffer;
+        private BufferObject<Vector3> vertexBuffer;
+        private BufferObject<uint> indexBuffer;
         private Texture tex1;
 
         public TestComponent()
@@ -35,8 +35,8 @@ namespace HelloWorldGL
                  "testshader.glsl|frag"
                  ), (s) => new ShaderProgram(s)));
 
-            Resources.Add(vertexBuffer = Buffer<Vector3>.CreateVertexBuffer("vbuf", ScreenTri.Vertices().ToArray()));
-            Resources.Add(indexBuffer = Buffer<uint>.CreateIndexBuffer("ibuf", ScreenTri.Indices().ToArray()));
+            Resources.Add(vertexBuffer = BufferObject<Vector3>.CreateVertexBuffer("vbuf", ScreenTri.Vertices().ToArray()));
+            Resources.Add(indexBuffer = BufferObject<uint>.CreateIndexBuffer("ibuf", ScreenTri.Indices().ToArray()));
 
             ModelMatrix = Matrix4.CreateTranslation(0.0f, 0.0f, -0.1f);
             ProjectionMatrix = Matrix4.CreateOrthographicOffCenter(0.0f, 1.0f, 0.0f, 1.0f, 0.001f, 2.0f);

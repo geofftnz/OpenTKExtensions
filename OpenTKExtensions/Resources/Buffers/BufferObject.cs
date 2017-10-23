@@ -9,7 +9,7 @@ using OpenTK;
 
 namespace OpenTKExtensions.Resources
 {
-    public class Buffer<T> : ResourceBase, IResource
+    public class BufferObject<T> : ResourceBase, IResource
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
@@ -55,20 +55,20 @@ namespace OpenTKExtensions.Resources
 
         private T[] InitialData;
 
-        public Buffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw, T[] initialData = null) : base(name)
+        public BufferObject(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw, T[] initialData = null) : base(name)
         {
             Target = target;
             UsageHint = usageHint;
             InitialData = initialData;
         }
 
-        public static Buffer<T> CreateVertexBuffer(string name, T[] initialData = null)
+        public static BufferObject<T> CreateVertexBuffer(string name, T[] initialData = null)
         {
-            return new Buffer<T>(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw, initialData);
+            return new BufferObject<T>(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw, initialData);
         }
-        public static Buffer<T> CreateIndexBuffer(string name, T[] initialData = null)
+        public static BufferObject<T> CreateIndexBuffer(string name, T[] initialData = null)
         {
-            return new Buffer<T>(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw, initialData);
+            return new BufferObject<T>(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw, initialData);
         }
 
         private void EnsureLoaded([CallerMemberName] string caller = null)
@@ -208,20 +208,20 @@ namespace OpenTKExtensions.Resources
         }
     }
 
-    public class Buffer : Buffer<object>, IResource
+    public class BufferObject : BufferObject<object>, IResource
     {
-        public Buffer(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
+        public BufferObject(string name, BufferTarget target = BufferTarget.ArrayBuffer, BufferUsageHint usageHint = BufferUsageHint.StaticDraw)
             : base(name, target, usageHint, null)
         {
         }
 
-        public static Buffer CreateVertexBuffer(string name)
+        public static BufferObject CreateVertexBuffer(string name)
         {
-            return new Buffer(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw);
+            return new BufferObject(name, BufferTarget.ArrayBuffer, BufferUsageHint.StaticDraw);
         }
-        public static Buffer CreateIndexBuffer(string name)
+        public static BufferObject CreateIndexBuffer(string name)
         {
-            return new Buffer(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
+            return new BufferObject(name, BufferTarget.ElementArrayBuffer, BufferUsageHint.StaticDraw);
         }
 
     }

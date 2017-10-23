@@ -37,7 +37,7 @@ namespace HelloWorldGL
             VSync = VSyncMode.Off;
 
             // set static loader
-            OpenTKExtensions.Resources.ShaderProgram.DefaultLoader = new OpenTKExtensions.Loaders.MultiPathFileSystemLoader(SHADERPATH);
+            ShaderProgram.DefaultLoader = new OpenTKExtensions.Loaders.MultiPathFileSystemLoader(SHADERPATH);
 
 
             Load += TestBench_Load;

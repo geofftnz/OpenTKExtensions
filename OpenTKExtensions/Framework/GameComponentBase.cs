@@ -40,38 +40,38 @@ namespace OpenTKExtensions.Framework
         /// </summary>
         public void Load()
         {
-            log.Info("GameComponentBase.Load({0}) loading", this.GetType().Name);
+            log.Info("GameComponentBase.Load({0}) loading", GetType().Name);
 
-            if (this.Status != ComponentStatus.New && this.Status != ComponentStatus.Unloaded)
+            if (Status != ComponentStatus.New && Status != ComponentStatus.Unloaded)
             {
-                log.Info("GameComponentBase.Load({0}) already loaded", this.GetType().Name);
+                log.Info("GameComponentBase.Load({0}) already loaded", GetType().Name);
                 return;
             }
 
-            this.Status = ComponentStatus.Loading;
-            this.OnLoading(EventArgs.Empty);
-            this.Resources.Load();
-            this.Status = ComponentStatus.Loaded;
-            this.OnLoaded(EventArgs.Empty);
+            Status = ComponentStatus.Loading;
+            OnLoading(EventArgs.Empty);
+            Resources.Load();
+            Status = ComponentStatus.Loaded;
+            OnLoaded(EventArgs.Empty);
 
-            log.Info("GameComponentBase.Load({0}) loaded", this.GetType().Name);
+            log.Info("GameComponentBase.Load({0}) loaded", GetType().Name);
         }
 
         public void Unload()
         {
-            log.Info("GameComponentBase.Unload({0}) unloading", this.GetType().Name);
+            log.Info("GameComponentBase.Unload({0}) unloading", GetType().Name);
 
-            if (this.Status != ComponentStatus.Loaded)
+            if (Status != ComponentStatus.Loaded)
             {
-                log.Info("GameComponentBase.Unload({0}) already unloaded", this.GetType().Name);
+                log.Info("GameComponentBase.Unload({0}) already unloaded", GetType().Name);
                 return;
             }
 
-            this.Status = ComponentStatus.Unloading;
-            this.OnUnloading(EventArgs.Empty);
-            this.Resources.Unload();
-            this.Status = ComponentStatus.Unloaded;
-            log.Info("GameComponentBase.Unload({0}) unloaded", this.GetType().Name);
+            Status = ComponentStatus.Unloading;
+            OnUnloading(EventArgs.Empty);
+            Resources.Unload();
+            Status = ComponentStatus.Unloaded;
+            log.Info("GameComponentBase.Unload({0}) unloaded", GetType().Name);
         }
 
 
@@ -84,7 +84,7 @@ namespace OpenTKExtensions.Framework
 
         public virtual void OnLoading(EventArgs e)
         {
-            this.Loading?.Invoke(this, e);
+            Loading?.Invoke(this, e);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace OpenTKExtensions.Framework
 
         public virtual void OnUnloading(EventArgs e)
         {
-            this.Unloading?.Invoke(this, e);
+            Unloading?.Invoke(this, e);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace OpenTKExtensions.Framework
 
         public virtual void OnLoaded(EventArgs e)
         {
-            this.Loaded?.Invoke(this, e);
+            Loaded?.Invoke(this, e);
         }
 
         public void StartRenderTimer()
