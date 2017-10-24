@@ -74,6 +74,7 @@
     <Compile Include="Framework\IKeyboardControllable.cs" />
     <Compile Include="Framework\ITimedComponent.cs" />
     <Compile Include="Framework\ITransformable.cs" />
+    <Compile Include="Framework\RenderTargetBase.cs" />
     <Compile Include="Framework\OperatorComponentBase.cs" />
     <Compile Include="Framework\OperatorOutput.cs" />
     <Compile Include="Input\KeyboardActionManager.cs" />
