@@ -9,33 +9,27 @@ using System;
 
 namespace HelloWorldGL
 {
-    public class TestComponent : GameComponentBase, IGameComponent, IRenderable, ITransformable, IReloadable,IResizeable
+    public class TestComponent2 : GameComponentBase, IGameComponent, IRenderable, ITransformable, IReloadable
     {
         public Matrix4 ViewMatrix { get; set; } = Matrix4.Identity;
         public Matrix4 ModelMatrix { get; set; } = Matrix4.Identity;
         public Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
         public int DrawOrder { get; set; } = 0;
         public bool Visible { get; set; } = true;
-        public int Width { get; set; } = 256;
-        public int Height { get; set; } = 256;
 
         private ReloadableResource<ShaderProgram> shader;
         private BufferObject<Vector3> vertexBuffer;
         private BufferObject<uint> indexBuffer;
-        private Texture tex1;
-        public Texture tex2 { get; set; }
 
-        public TestComponent()
+        public TestComponent2()
         {
-            Resources.Add("tex1", tex1 = @"Resources/Textures/tex1.png".LoadImageToTextureRgba());
-
             Resources.Add(shader = new ReloadableResource<ShaderProgram>("p1r", () => new ShaderProgram(
                  "p1",
                  "vertex",
-                 "",
+                 "out_Colour",
                  true,
-                 "testshader.glsl|vert",
-                 "testshader.glsl|frag"
+                 "testshader2.glsl|vert",
+                 "testshader2.glsl|frag"
                  ), (s) => new ShaderProgram(s)));
 
             Resources.Add(vertexBuffer = BufferObject<Vector3>.CreateVertexBuffer("vbuf", ScreenTri.Vertices().ToArray()));
@@ -50,20 +44,18 @@ namespace HelloWorldGL
 
         public void Render(IFrameRenderData frameData)
         {
-            GL.Viewport(0, 0, Width, Height);
+            var fData = frameData as TestBench.RenderData;
+
             GL.Disable(EnableCap.CullFace);
             GL.Enable(EnableCap.Blend);
+            GL.Disable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-            tex1.Bind(TextureUnit.Texture0);
-            tex2?.Bind(TextureUnit.Texture1);
 
             shader.Resource.Use()
                 .SetUniform("projectionMatrix", ProjectionMatrix)
                 .SetUniform("modelMatrix", ModelMatrix)
                 .SetUniform("viewMatrix", ViewMatrix)
-                .SetUniform("tex1", 0)
-                .SetUniform("tex2", 1);
+                .SetUniform("time", (float)(fData?.Time));
 
             vertexBuffer.Bind(shader.Resource.VariableLocations["vertex"]);
             indexBuffer.Bind();
@@ -74,12 +66,6 @@ namespace HelloWorldGL
         public void Reload()
         {
             Resources.Reload();
-        }
-
-        public void Resize(int width, int height)
-        {
-            Width = width;
-            Height = height;
         }
     }
 }

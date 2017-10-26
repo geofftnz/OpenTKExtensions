@@ -17,10 +17,18 @@ namespace OpenTKExtensions.Framework
     public class RenderTargetBase : CompositeGameComponent, IGameComponent, IRenderable, IResizeable, IReloadable
     {
         protected GBuffer OutputBuffer;
+        public bool InheritSizeFromParent { get; set; } = false;
 
-        public RenderTargetBase(bool wantDepth = false, int width = 256, int height = 256)
+        public RenderTargetBase(bool wantDepth = false, bool inheritSize = false, int width = 256, int height = 256)
         {
+            InheritSizeFromParent = inheritSize;
             Resources.Add(OutputBuffer = new GBuffer("gbuffer", wantDepth, width, height));
+            OutputBuffer.Resized += OutputBuffer_Resized;
+        }
+
+        private void OutputBuffer_Resized(object sender, GBuffer.ResizedEventArgs e)
+        {
+            base.Resize(e.Width, e.Height);
         }
 
         public void SetOutput(int index, TextureSlotParam texparam)
@@ -31,6 +39,11 @@ namespace OpenTKExtensions.Framework
         public void SetOutput(int index, Texture texture)
         {
             OutputBuffer.SetSlot(index, texture);
+        }
+
+        public Texture GetTexture(int slot)
+        {
+            return OutputBuffer.GetTextureAtSlot(slot);
         }
 
         public override void Render(IFrameRenderData frameData)
@@ -44,8 +57,10 @@ namespace OpenTKExtensions.Framework
 
         public override void Resize(int width, int height)
         {
-            base.Resize(width, height);
-            OutputBuffer?.Resize(width, height);
+            if (InheritSizeFromParent)
+            {
+                OutputBuffer?.Resize(width, height);
+            }
         }
     }
 }

@@ -18,6 +18,9 @@ namespace HelloWorldGL
         //private double lastShaderPollTime = 0.0;
         private Stopwatch timer = new Stopwatch();
 
+        private RenderTargetBase renderTarget;
+        private TestComponent testcomp1;
+
 
         public class RenderData : IFrameRenderData, IFrameUpdateData
         {
@@ -47,13 +50,20 @@ namespace HelloWorldGL
             Resize += TestBench_Resize;
 
             // TODO: Components.
-            components.Add(new TestComponent());
+            components.Add(renderTarget = new RenderTargetBase(false, false, 512, 512) { DrawOrder = 1 });
+            renderTarget.Loading += (s, e) => { renderTarget.SetOutput(0, new TextureSlotParam(PixelInternalFormat.Rgba32f, PixelFormat.Rgba, PixelType.Float)); };
+            renderTarget.Add(new TestComponent2());
 
-            // set default shader loader
-            //ShaderProgram.DefaultLoader = new OpenTKExtensions.Loaders.MultiPathFileSystemLoader(SHADERPATH);
+            components.Add(testcomp1 = new TestComponent() { DrawOrder = 2 });
 
+            renderTarget.Loaded += (s, e) =>
+            {
+                testcomp1.tex2 = renderTarget.GetTexture(0);
+            };
 
+            timer.Start();
         }
+
 
         private void TestBench_Resize(object sender, System.EventArgs e)
         {
@@ -68,7 +78,6 @@ namespace HelloWorldGL
                 components.Reload();
                 shaderUpdatePoller.Reset();
             }
-
 
 
             GL.ClearColor(0.0f, 0.1f, 0.2f, 1.0f);

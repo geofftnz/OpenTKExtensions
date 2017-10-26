@@ -17,10 +17,10 @@ namespace OpenTKExtensions.Resources
         public bool MipMaps { get; set; }
 
         public TextureSlotParam()
-            : this(TextureTarget.Texture2D, PixelInternalFormat.Rgba, PixelFormat.Rgba, PixelType.UnsignedByte, false, GetDefaultTextureParameters())
+            : this(TextureTarget.Texture2D, PixelInternalFormat.Rgba, PixelFormat.Rgba, PixelType.UnsignedByte, false, GetDefaultTextureParameters().ToArray())
         {
         }
-        public TextureSlotParam(TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type, bool mipmaps, IEnumerable<ITextureParameter> texParams)
+        public TextureSlotParam(TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type, bool mipmaps, params ITextureParameter[] texParams)
         {
             Target = target;
             InternalFormat = internalFormat;
@@ -31,7 +31,7 @@ namespace OpenTKExtensions.Resources
         }
 
         public TextureSlotParam(PixelInternalFormat internalFormat, PixelFormat format, PixelType type)
-            : this(TextureTarget.Texture2D, internalFormat, format, type, false, GetDefaultTextureParameters())
+            : this(TextureTarget.Texture2D, internalFormat, format, type, false, GetDefaultTextureParameters().ToArray())
         {
         }
 

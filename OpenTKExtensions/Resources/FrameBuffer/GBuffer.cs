@@ -27,6 +27,24 @@ namespace OpenTKExtensions.Resources
         public int Height { get; private set; }
         public bool WantDepth { get; set; }
 
+        public class ResizedEventArgs : EventArgs
+        {
+            public int Width { get; private set; }
+            public int Height { get; private set; }
+            public ResizedEventArgs(int width, int height) : base()
+            {
+                Width = width;
+                Height = height;
+            }
+        }
+        public event EventHandler<ResizedEventArgs> Resized;
+
+        public virtual void OnResized(ResizedEventArgs e)
+        {
+            Resized?.Invoke(this, e);
+        }
+
+
         public GBuffer(string name, bool wantDepth, int width, int height) : base(name)
         {
             WantDepth = wantDepth;
@@ -82,6 +100,8 @@ namespace OpenTKExtensions.Resources
             Height = height;
 
             Load();
+
+            OnResized(new ResizedEventArgs(Width, Height));
         }
 
         public GBuffer SetSlot(int slot, TextureSlotParam texparam)
