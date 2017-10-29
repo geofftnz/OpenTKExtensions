@@ -75,7 +75,8 @@ namespace HelloWorldGL
                 .SetUniform("modelMatrix", ModelMatrix)
                 .SetUniform("viewMatrix", ViewMatrix)
                 .SetUniform("tex1", 0)
-                .SetUniform("tex2", 1);
+                .SetUniform("tex_new", 1)
+                ;
 
             vertexBuffer.Bind(shader.Resource.VariableLocations["vertex"]);
             indexBuffer.Bind();

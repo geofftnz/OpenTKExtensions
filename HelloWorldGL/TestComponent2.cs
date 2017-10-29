@@ -26,7 +26,7 @@ namespace HelloWorldGL
             Resources.Add(shader = new ReloadableResource<ShaderProgram>("p2r", () => new ShaderProgram(
                  "p2",
                  "vertex",
-                 "out_Colour",
+                 "",
                  true,
                  "testshader2.glsl|vert",
                  "testshader2.glsl|frag"

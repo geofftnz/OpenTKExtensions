@@ -315,6 +315,16 @@ namespace OpenTKExtensions.Resources
                 setFunc(location);
         }
 
+        public ShaderProgram SetUniform(string uniformName, uint value)
+        {
+            SetUniformIfExists(uniformName, (loc) => GL.Uniform1(loc, value));
+            return this;
+        }
+        public ShaderProgram SetUniform(string uniformName, int value)
+        {
+            SetUniformIfExists(uniformName, (loc) => GL.Uniform1(loc, value));
+            return this;
+        }
         public ShaderProgram SetUniform(string uniformName, float value)
         {
             SetUniformIfExists(uniformName, (loc) => GL.Uniform1(loc, value));
