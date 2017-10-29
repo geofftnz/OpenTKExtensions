@@ -53,6 +53,7 @@ namespace HelloWorldGL
             GL.Viewport(0, 0, Width, Height);
             GL.Disable(EnableCap.CullFace);
             GL.Enable(EnableCap.Blend);
+            GL.Enable(EnableCap.Texture2D);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             tex1.Bind(TextureUnit.Texture0);

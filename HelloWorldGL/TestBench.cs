@@ -55,6 +55,7 @@ namespace HelloWorldGL
             renderTarget.Add(new TestComponent2());
 
             components.Add(testcomp1 = new TestComponent() { DrawOrder = 2 });
+            //components.Add(new TestComponent2() { DrawOrder = 3 });
 
             renderTarget.Loaded += (s, e) =>
             {
@@ -67,7 +68,7 @@ namespace HelloWorldGL
 
         private void TestBench_Resize(object sender, System.EventArgs e)
         {
-            GL.Viewport(this.ClientRectangle);
+            GL.Viewport(ClientRectangle);
             components.Resize(ClientRectangle.Width, ClientRectangle.Height);
         }
 

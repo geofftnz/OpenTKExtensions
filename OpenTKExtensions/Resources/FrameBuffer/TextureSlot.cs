@@ -16,12 +16,12 @@ namespace OpenTKExtensions.Resources
         /// <summary>
         /// Slot has texture defined
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = false;
 
         /// <summary>
         /// Texture is externally defined (does not need to be managed by GBuffer)
         /// </summary>
-        public bool External { get; set; }
+        public bool External { get; set; } = false;
 
         /// <summary>
         /// Index of fragment data output
@@ -36,12 +36,17 @@ namespace OpenTKExtensions.Resources
         /// <summary>
         /// Texture bound to this slot
         /// </summary>
-        public Texture Texture { get; set; }
+        public Texture Texture { get; set; } = null;
 
         public int TextureID { get { return Texture?.ID ?? -1; } }
 
         public DrawBuffersEnum DrawBufferSlot { get { return DrawBuffersEnum.ColorAttachment0 + Slot; } }
         public FramebufferAttachment FramebufferAttachmentSlot { get { return FramebufferAttachment.ColorAttachment0 + Slot; } }
+
+        public TextureSlot()
+        {
+
+        }
 
         public TextureSlot(int colourAttachmentSlot = 0, Texture texture = null, TextureTarget target = TextureTarget.Texture2D)
         {
@@ -56,7 +61,7 @@ namespace OpenTKExtensions.Resources
         {
             if (Texture == null && !External)
             {
-                Texture = new Texture(Width, Height, TextureTarget.Texture2D, TextureParam.InternalFormat, TextureParam.Format, TextureParam.Type);
+                Texture = new Texture($"tex_{Slot:00}", Width, Height, TextureTarget.Texture2D, TextureParam.InternalFormat, TextureParam.Format, TextureParam.Type);
             }
 
             if (!External)

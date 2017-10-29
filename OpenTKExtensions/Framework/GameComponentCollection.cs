@@ -50,24 +50,24 @@ namespace OpenTKExtensions.Framework
 
         public void Update<F>(F frameData) where F : IFrameUpdateData
         {
-            this.Do<IUpdateable>(c => c.Update(frameData));
+            Do<IUpdateable>(c => c.Update(frameData));
         }
 
         public void Reload()
         {
-            this.Do<IReloadable>(c => c.Reload());
+            Do<IReloadable>(c => c.Reload());
         }
 
         public void Resize(int width, int height)
         {
-            this.Do<IResizeable>(c => c.Resize(width, height));
+            Do<IResizeable>(c => c.Resize(width, height));
         }
 
 
         public void Add(IGameComponent component, int loadOrder)
         {
             component.LoadOrder = loadOrder;
-            this.Add(component);
+            Add(component);
         }
 
         public bool ProcessKeyDown(OpenTK.Input.KeyboardKeyEventArgs e)
@@ -94,7 +94,7 @@ namespace OpenTKExtensions.Framework
         {
             set
             {
-                this.Do<ITransformable>(c => c.ProjectionMatrix = value);
+                Do<ITransformable>(c => c.ProjectionMatrix = value);
             }
         }
 
@@ -102,7 +102,7 @@ namespace OpenTKExtensions.Framework
         {
             set
             {
-                this.Do<ITransformable>(c => c.ViewMatrix = value);
+                Do<ITransformable>(c => c.ViewMatrix = value);
             }
         }
 
@@ -110,7 +110,7 @@ namespace OpenTKExtensions.Framework
         {
             set
             {
-                this.Do<ITransformable>(c => c.ModelMatrix = value);
+                Do<ITransformable>(c => c.ModelMatrix = value);
             }
         }
 

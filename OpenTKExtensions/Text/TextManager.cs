@@ -24,14 +24,14 @@ namespace OpenTKExtensions.Text
 
         public TextManager(string name, Font font)
         {
-            this.Name = name;
-            this.Font = font;
-            this.NeedsRefresh = false;
-            this.Visible = true;
-            this.DrawOrder = int.MaxValue;
-            this.AutoTransform = false;
-            this.Projection = Matrix4.Identity;
-            this.Modelview = Matrix4.Identity;
+            Name = name;
+            Font = font;
+            NeedsRefresh = false;
+            Visible = true;
+            DrawOrder = int.MaxValue;
+            AutoTransform = false;
+            Projection = Matrix4.Identity;
+            Modelview = Matrix4.Identity;
         }
 
         public TextManager()
@@ -42,17 +42,17 @@ namespace OpenTKExtensions.Text
 
         public void Clear()
         {
-            this.Blocks.Clear();
-            this.NeedsRefresh = true;
+            Blocks.Clear();
+            NeedsRefresh = true;
         }
 
         public bool Add(TextBlock b)
         {
             if (!Blocks.ContainsKey(b.Name))
             {
-                log.Trace("TextManager.Add ({0}): Adding \"{1}\"", this.Name, b.Text);
+                LogTrace($"TextManager.Add ({Name}): Adding \"{b.Text}\"");
                 Blocks.Add(b.Name, b);
-                this.NeedsRefresh = true;
+                NeedsRefresh = true;
                 return true;
             }
             return false;
@@ -63,16 +63,16 @@ namespace OpenTKExtensions.Text
             if (!Add(b))
             {
                 Blocks[b.Name] = b;
-                this.NeedsRefresh = true;
+                NeedsRefresh = true;
             }
         }
 
         public bool Remove(string blockName)
         {
-            if (this.Blocks.ContainsKey(blockName))
+            if (Blocks.ContainsKey(blockName))
             {
-                this.Blocks.Remove(blockName);
-                this.NeedsRefresh = true;
+                Blocks.Remove(blockName);
+                NeedsRefresh = true;
                 return true;
             }
             return false;
@@ -81,15 +81,15 @@ namespace OpenTKExtensions.Text
         {
             bool hit = false;
 
-            foreach (var blockToRemove in this.Blocks.Keys.Where(n => n.StartsWith(blockNamePrefix)).ToList())
+            foreach (var blockToRemove in Blocks.Keys.Where(n => n.StartsWith(blockNamePrefix)).ToList())
             {
-                this.Blocks.Remove(blockToRemove);
+                Blocks.Remove(blockToRemove);
                 hit = true;
             }
 
             if (hit)
             {
-                this.NeedsRefresh = true;
+                NeedsRefresh = true;
                 return true;
             }
             return false;
@@ -98,55 +98,55 @@ namespace OpenTKExtensions.Text
 
         public void Refresh()
         {
-            log.Trace("TextManager.Refresh ({0}): Refreshing {1} blocks...", this.Name, this.Blocks.Count);
+            LogTrace($"({Name}): Refreshing {Blocks.Count} blocks...");
 
-            if (this.Font == null)
+            if (Font == null)
             {
-                log.Warn("TextManager.Refresh ({0}): Font not specified so bailing out.", this.Name);
+                LogWarn($"({Name}): Font not specified so bailing out.");
                 return;
             }
 
-            if (!this.Font.IsLoaded)
+            if (!Font.IsLoaded)
             {
-                log.Warn("TextManager.Refresh ({0}): Font not loaded so bailing out.", this.Name);
+                LogWarn($"({Name}): Font not loaded so bailing out.");
                 return;
             }
 
             // refresh character arrays
-            this.Font.Clear();
+            Font.Clear();
 
-            foreach (var b in this.Blocks.Values)
+            foreach (var b in Blocks.Values)
             {
-                this.Font.AddString(b.Text, b.Position, b.Size, b.Colour);
+                Font.AddString(b.Text, b.Position, b.Size, b.Colour);
             }
 
-            this.Font.Refresh();
-            this.NeedsRefresh = false;
+            Font.Refresh();
+            NeedsRefresh = false;
         }
 
         public void Render(IFrameRenderData frameData)
         {
-            this.Render();
+            Render();
         }
         public void Render()
         {
-            if (this.Font == null)
+            if (Font == null)
             {
-                log.Warn("TextManager.Render ({0}): Font not specified so bailing out.", this.Name);
+                LogWarn($"({Name}): Font not specified so bailing out.");
                 return;
             }
-            if (!this.Font.IsLoaded)
+            if (!Font.IsLoaded)
             {
-                log.Warn("TextManager.Refresh ({0}): Font not loaded so bailing out.", this.Name);
+                LogWarn($"({Name}): Font not loaded so bailing out.");
                 return;
             }
 
-            if (this.NeedsRefresh)
+            if (NeedsRefresh)
             {
-                this.Refresh();
+                Refresh();
             }
 
-            this.Font.Render(this.Projection, this.Modelview);
+            Font.Render(Projection, Modelview);
         }
 
 
@@ -154,12 +154,12 @@ namespace OpenTKExtensions.Text
         {
             if (height > 0)
             {
-                this.Projection = Matrix4.CreateOrthographicOffCenter(0.0f, (float)width / (float)height, 1.0f, 0.0f, 0.001f, 10.0f);
-                this.Modelview = Matrix4.Identity * Matrix4.CreateTranslation(0.0f, 0.0f, -1.0f);
+                Projection = Matrix4.CreateOrthographicOffCenter(0.0f, (float)width / (float)height, 1.0f, 0.0f, 0.001f, 10.0f);
+                Modelview = Matrix4.Identity * Matrix4.CreateTranslation(0.0f, 0.0f, -1.0f);
             }
             else
             {
-                this.Projection = this.Modelview = Matrix4.Identity;
+                Projection = Modelview = Matrix4.Identity;
             }
             
         }

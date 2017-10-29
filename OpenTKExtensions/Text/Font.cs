@@ -277,7 +277,7 @@ namespace OpenTKExtensions.Text
 
         public void LoadMetaData(string fileName)
         {
-            log.Trace("Font {0} loading meta-data from {1}", this.Name, fileName);
+            LogTrace($"Font {Name} loading meta-data from {fileName}");
             using (var fs = new FileStream(fileName, FileMode.Open))
             {
                 this.LoadMetaData(fs);
@@ -305,12 +305,12 @@ namespace OpenTKExtensions.Text
                     }
                 }
             }
-            log.Trace("Font {0} meta data loaded. {1} characters parsed.", this.Name, this.Characters.Count);
+            LogTrace($"Font {Name} meta data loaded. {Characters.Count} characters parsed.");
         }
 
         public void LoadTexture(string fileName)
         {
-            log.Trace("Font {0} loading texture from {1}", this.Name, fileName);
+            LogTrace($"Font {Name} loading texture from {fileName}");
 
             ImageLoader.ImageInfo info;
 
@@ -333,7 +333,7 @@ namespace OpenTKExtensions.Text
 
             IsTextureLoaded = true;
 
-            log.Trace("Font {0} texture loaded, resolution {1}x{2}", this.Name, this.TexWidth, this.TexHeight);
+            LogTrace($"Font {Name} texture loaded, resolution {TexWidth}x{TexHeight}");
         }
 
         /*public void Unload()

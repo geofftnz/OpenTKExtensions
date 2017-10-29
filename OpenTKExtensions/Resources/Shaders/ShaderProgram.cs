@@ -16,7 +16,6 @@ namespace OpenTKExtensions.Resources
     /// </summary>
     public class ShaderProgram : ResourceBase, IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
         public static IShaderLoader DefaultLoader { get; set; } = null;
 
         public int Handle { get; private set; } = 0;
@@ -74,18 +73,18 @@ namespace OpenTKExtensions.Resources
 
             Name = cloneFrom.Name;
 
-            foreach(var v in cloneFrom.VariableLocations)
+            foreach (var v in cloneFrom.VariableLocations)
             {
                 VariableLocations.Add(v.Key, v.Value);
             }
 
-            foreach(var f in cloneFrom.FragDataLocation)
+            foreach (var f in cloneFrom.FragDataLocation)
             {
                 FragDataLocation.Add(f.Key, f.Value);
             }
 
             UsingFilenames = cloneFrom.UsingFilenames;
-            foreach(var s in cloneFrom.ShaderSourceOrFilenames)
+            foreach (var s in cloneFrom.ShaderSourceOrFilenames)
             {
                 ShaderSourceOrFilenames.Add(s);
             }
@@ -173,13 +172,22 @@ namespace OpenTKExtensions.Resources
                 throw new InvalidOperationException($"ShaderProgram.Link ({Name}): No shaders in program.");
 
             foreach (var s in Shaders.Values)
+            {
+                LogInfo($"AttachShader {s.Name} ({s.Type})");
                 GL.AttachShader(Handle, s.Handle);
+            }
 
             foreach (var v in VariableLocations)
+            {
+                LogInfo($"Binding variable {v.Value} to {v.Key}");
                 GL.BindAttribLocation(Handle, v.Value, v.Key);
+            }
 
             foreach (var i in FragDataLocation.Keys)
+            {
+                LogInfo($"Binding fragment output {i} to {FragDataLocation[i]}");
                 GL.BindFragDataLocation(Handle, i, FragDataLocation[i]);
+            }
 
             GL.LinkProgram(Handle);
 
@@ -187,14 +195,14 @@ namespace OpenTKExtensions.Resources
             int linkStatus;
             GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out linkStatus);
 
-            string formattedStatus = $"ShaderProgram.Link ({Name}): {infoLog}";
+            string formattedStatus = $"ShaderProgram.Link ({Name}): Link status {linkStatus} {infoLog}";
             if (linkStatus != 1)
             {
                 throw new InvalidOperationException(formattedStatus);
             }
             else
             {
-                log.Trace(formattedStatus);
+                LogInfo(formattedStatus);
             }
 
 
@@ -290,7 +298,7 @@ namespace OpenTKExtensions.Resources
             location = GL.GetUniformLocation(Handle, uniformName);
             if (location == -1)
                 if (softFail)
-                    log.Warn($"ShaderProgram.LocateUniform ({Name}): WARN: Could not locate {uniformName}");
+                    LogWarn($"Could not locate {uniformName}");
                 else
                     throw new InvalidOperationException($"ShaderProgram.LocateUniform ({Name}): Could not locate {uniformName}");
 

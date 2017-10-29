@@ -33,11 +33,13 @@ namespace OpenTKExtensions.Framework
 
         public void SetOutput(int index, TextureSlotParam texparam)
         {
+            LogInfo($"{index} -> {texparam}");
             OutputBuffer.SetSlot(index, texparam);
         }
 
         public void SetOutput(int index, Texture texture)
         {
+            LogInfo($"{index} -> {texture}");
             OutputBuffer.SetSlot(index, texture);
         }
 
@@ -49,6 +51,7 @@ namespace OpenTKExtensions.Framework
         public override void Render(IFrameRenderData frameData)
         {
             OutputBuffer.BindForWriting();
+            OutputBuffer.ClearColourBuffer(0, new Vector4(0f));
 
             Components.Render(frameData);
 

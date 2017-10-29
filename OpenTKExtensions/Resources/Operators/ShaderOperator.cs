@@ -20,10 +20,8 @@ namespace OpenTKExtensions.Resources
     /// </summary>
     public class ShaderOperatorResource : ResourceBase, IResource, IReloadableResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
-        private ReloadableResource<ShaderProgram> Shader;
-        private GBuffer OutputBuffer;
+        //private ReloadableResource<ShaderProgram> Shader;
+        //private GBuffer OutputBuffer;
 
         public ShaderOperatorResource(string name) : base(name)
         {
@@ -32,7 +30,7 @@ namespace OpenTKExtensions.Resources
 
         public void Load()
         {
-            Shader.Load();
+            //Shader.Load();
         }
 
         public bool TryReload(out string message)

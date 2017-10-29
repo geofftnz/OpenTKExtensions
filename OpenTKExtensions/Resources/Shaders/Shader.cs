@@ -11,8 +11,6 @@ namespace OpenTKExtensions.Resources
 {
     public class Shader : ResourceBase, IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         public int Handle { get; private set; } = -1;
         public string Source { get; set; }
         public ShaderType Type { get; set; }
@@ -56,12 +54,12 @@ namespace OpenTKExtensions.Resources
             if (compileStatus != 1)
             {
                 var ex = new ShaderCompileException(Name, infoLog, Source);
-                log.Error($"Shader.Compile ({Name}): {ex.DetailedError}");
+                LogError($"{ex.DetailedError}");
                 throw ex;
             }
             else
             {
-                log.Trace($"Shader.Compile ({Name}): {infoLog}");
+                LogInfo($"{infoLog}");
             }
         }
 

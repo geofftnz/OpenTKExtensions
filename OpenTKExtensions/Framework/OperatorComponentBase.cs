@@ -16,8 +16,6 @@ namespace OpenTKExtensions.Framework
     /// </summary>
     public class OperatorComponentBase : GameComponentBase, IGameComponent, IRenderable, IResizeable, IReloadable
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         public int DrawOrder { get; set; }
         public bool Visible { get; set; } = true;
 

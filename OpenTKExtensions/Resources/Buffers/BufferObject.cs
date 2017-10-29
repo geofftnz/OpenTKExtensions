@@ -11,8 +11,6 @@ namespace OpenTKExtensions.Resources
 {
     public class BufferObject<T> : ResourceBase, IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         private uint handle = 0;
         public uint Handle { get { return handle; } }
 
@@ -87,7 +85,7 @@ namespace OpenTKExtensions.Resources
                 //if (!GL.IsBuffer(handle))
                 //throw new Exception($"Buffer.Load ({Name}): Handle {Handle} is not a buffer");
 
-                log.Trace($"Buffer.Load ({Name}): Handle is {Handle}");
+                LogTrace($"Handle is {Handle}");
 
                 if (InitialData != null)
                 {
@@ -125,7 +123,7 @@ namespace OpenTKExtensions.Resources
                 return;  // silently fail
 
             EnsureLoaded();
-            log.Trace($"Buffer.SetData ({Name}): Loading...");
+            LogTrace($"Loading...");
 
             GL.BindBuffer(this.Target, this.Handle);
 
@@ -138,7 +136,7 @@ namespace OpenTKExtensions.Resources
             GL.BufferData<TT>(this.Target, new IntPtr(arraySize), data, this.UsageHint);
             this.HasData = true;
             GL.BindBuffer(this.Target, 0);
-            log.Trace($"Buffer.SetData ({Name}): Loaded {data.Length} elements, {arraySize} bytes");
+            LogTrace($"Loaded {data.Length} elements, {arraySize} bytes");
         }
 
         public void SetData(Vector4[] data)
@@ -201,7 +199,7 @@ namespace OpenTKExtensions.Resources
         {
             if (!IsMapped)
             {
-                log.Warn($"Buffer.Unmap ({Name}): Buffer not mapped");
+                LogWarn($"Buffer not mapped");
             }
             GL.UnmapBuffer(this.Target);
             IsMapped = false;

@@ -24,7 +24,7 @@ void main(void)
 {
 	vec3 p = pos;
 
-	p *= sin(time) + cos(p.x) + sin(p.y);
+	p *= sin(time*8.0) + cos(p.x) + sin(p.y);
 	vec3 col = vec3(0.5) + p * 0.5;
 	col.b = sin(time) * 0.5+0.5;
 

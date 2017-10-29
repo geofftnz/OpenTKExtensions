@@ -11,8 +11,6 @@ namespace OpenTKExtensions.Resources
 {
     public class FrameBuffer : ResourceBase, IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         public int ID { get; private set; } = -1;
         public FramebufferTarget Target { get; private set; }
         public FramebufferErrorCode Status { get; private set; }
@@ -42,7 +40,7 @@ namespace OpenTKExtensions.Resources
             if (!IsLoaded)
             {
                 ID = GL.GenFramebuffer();
-                log.Info($"FrameBuffer.Load ({Name}) returned {ID}");
+                LogInfo($" ID = {ID}");
             }
         }
 

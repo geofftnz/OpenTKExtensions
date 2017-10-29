@@ -228,8 +228,8 @@ namespace OpenTKExtensions.Components.PostProcess
 
         public void Reload()
         {
-            this.ReloadShader(this.LoadShader, this.SetShader, log);
-            this.ReloadShader(this.LoadDestShader, this.SetDestShader, log);
+            this.ReloadShader(this.LoadShader, this.SetShader);
+            this.ReloadShader(this.LoadDestShader, this.SetDestShader);
         }
 
         public void Resize(int width, int height)

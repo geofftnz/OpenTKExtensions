@@ -37,7 +37,7 @@ namespace OpenTKExtensions.Resources
 
         public override string ToString()
         {
-            return string.Format("[{0},{1},{2}]", InternalFormat.ToString(), Format.ToString(), Type.ToString());
+            return $"[{InternalFormat},{Format},{Type}]";
         }
 
         public void ApplyParametersTo(Texture t)

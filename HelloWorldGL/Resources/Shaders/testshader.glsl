@@ -23,20 +23,14 @@ uniform sampler2D tex2;
 
 void main(void)
 {
-	vec4 t = texture(tex1,(pos.xy*vec2(0.5,-0.5)+0.5).xy).rgba;
-	vec3 t2 = texture(tex2,(pos.xy*vec2(0.5,-0.5)+0.5).xy).rgb;
+	vec4 t1 = texture(tex1,(pos.xy*vec2(0.5,-0.5)+0.5).xy).rgba;
+	vec4 t2 = texture(tex2,(pos.xy*vec2(0.5,-0.5)+0.5).xy).rgba;
 
 	vec3 col = vec3(0.5) + pos * 0.5;
 	col.b = 0.6;
 
-	t.rgb += col * 0.1;
-	t.rgb += t2.rgb * 0.5;
-
-	//t.a = mod(pos.x*32.0,1.0) * mod(pos.y*32.0,1.0);
-
-	//col = t;
-
-	//t.rgb = pow(t.rgb,vec3(1.0 / 2.2));
-
-	out_Colour = t;
+	col.r += t1.r * 0.2;
+	col.g += t2.g * 0.2;
+	
+	out_Colour = vec4(col,1.0);
 }

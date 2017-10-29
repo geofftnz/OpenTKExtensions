@@ -14,8 +14,6 @@ namespace OpenTKExtensions.Resources
     /// </summary>
     public class GBuffer : ResourceBase, IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         public const int MAXSLOTS = 16;
 
         private TextureSlot[] TextureSlots = new TextureSlot[MAXSLOTS];
@@ -70,7 +68,7 @@ namespace OpenTKExtensions.Resources
 
         public void Load()
         {
-            log.Info($"GBuffer.Load ({Name}) creating G-Buffer of size {Width}x{Height}");
+            LogInfo($"Creating G-Buffer of size {Width}x{Height}");
             FBO.Load();
 
             FBO.Bind();
@@ -83,7 +81,7 @@ namespace OpenTKExtensions.Resources
             SetDrawBuffers();
 
             var status = FBO.GetStatus();
-            log.Info($"GBuffer.Load ({Name}) FBO state is {FBO.Status}");
+            LogInfo($"FBO state is {FBO.Status}");
 
             FBO.Unbind();
         }
@@ -112,10 +110,11 @@ namespace OpenTKExtensions.Resources
             }
 
             TextureSlots[slot].Enabled = true;
+            TextureSlots[slot].External = false;
             TextureSlots[slot].Slot = slot;
             TextureSlots[slot].TextureParam = texparam;
 
-            log.Trace($"GBuffer.SetSlot {slot} = {texparam}");
+            LogInfo($"Internal texture {slot} = {texparam}");
 
             return this;
         }
@@ -134,7 +133,7 @@ namespace OpenTKExtensions.Resources
             TextureSlots[slot].TextureParam = new TextureSlotParam(texture.InternalFormat, texture.Format, texture.Type);
 
 
-            log.Trace($"GBuffer.SetSlot {slot} = {TextureSlots[slot].TextureParam}");
+            LogInfo($"External texture {slot} = {TextureSlots[slot].TextureParam}");
 
             return this;
         }

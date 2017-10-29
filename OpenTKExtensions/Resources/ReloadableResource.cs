@@ -10,8 +10,6 @@ namespace OpenTKExtensions.Resources
 {
     public class ReloadableResource<T> : ResourceBase, IResource, IReloadableResource where T : IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         public T Resource { get; private set; }
 
         private Func<T> Create = null;
@@ -44,7 +42,7 @@ namespace OpenTKExtensions.Resources
 
         public bool TryReload(out string message)
         {
-            log.Info($"ReloadableResource.TryReload attempting reload of {Name}...");
+            LogInfo($"Attempting reload...");
             try
             {
                 T newResource = Reload(Resource);
@@ -54,14 +52,14 @@ namespace OpenTKExtensions.Resources
 
                 if (!ReferenceEquals(Resource, newResource))
                 {
-                    log.Info($"ReloadableResource.TryReload new object created for {Name}...");
+                    LogInfo($"New object created...");
                     newResource.Load();
                     Resource.Unload();
                     Resource = newResource;
                 }
                 else
                 {
-                    log.Info($"ReloadableResource.TryReload in-place reload of {Name}...");
+                    LogInfo($"In-place reload...");
                 }
 
                 message = $"ReloadableResource.TryReload {Resource.Name} reloaded.";

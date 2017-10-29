@@ -24,7 +24,7 @@ namespace HelloWorldGL
         public TestComponent2()
         {
             Resources.Add(shader = new ReloadableResource<ShaderProgram>("p1r", () => new ShaderProgram(
-                 "p1",
+                 "p2",
                  "vertex",
                  "out_Colour",
                  true,

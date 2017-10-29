@@ -5,12 +5,13 @@ using System.Text;
 using NLog;
 using System.Diagnostics;
 using OpenTKExtensions.Resources;
+using System.Runtime.CompilerServices;
 
 namespace OpenTKExtensions.Framework
 {
     public class GameComponentBase : IGameComponent, ITimedComponent
     {
-        protected static Logger log = LogManager.GetCurrentClassLogger();
+        private static Logger log = LogManager.GetCurrentClassLogger();
 
         public ComponentStatus Status { get; protected set; } = ComponentStatus.New;
         public int LoadOrder
@@ -119,5 +120,23 @@ namespace OpenTKExtensions.Framework
             renderTimer.Stop();
             lastRenderTime = renderTimer.Elapsed;
         }
+
+        protected void LogTrace(string message, [CallerMemberName] string caller = null)
+        {
+            log.Trace($"{this.GetType().Name}.{caller}: {message}");
+        }
+        protected void LogInfo(string message, [CallerMemberName] string caller = null)
+        {
+            log.Info($"{this.GetType().Name}.{caller}: {message}");
+        }
+        protected void LogWarn(string message, [CallerMemberName] string caller = null)
+        {
+            log.Warn($"{this.GetType().Name}.{caller}: {message}");
+        }
+        protected void LogError(string message, [CallerMemberName] string caller = null)
+        {
+            log.Error($"{this.GetType().Name}.{caller}: {message}");
+        }
+
     }
 }

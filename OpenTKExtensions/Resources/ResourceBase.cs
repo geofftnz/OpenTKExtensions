@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace OpenTKExtensions.Resources
@@ -42,6 +43,22 @@ namespace OpenTKExtensions.Resources
             OnUnloaded(new EventArgs());
         }
 
+        protected void LogTrace(string message, [CallerMemberName] string caller = null)
+        {
+            log.Trace($"{this.GetType().Name}.{caller}({Name}): {message}");
+        }
+        protected void LogInfo(string message, [CallerMemberName] string caller = null)
+        {
+            log.Info($"{this.GetType().Name}.{caller}({Name}): {message}");
+        }
+        protected void LogWarn(string message, [CallerMemberName] string caller = null)
+        {
+            log.Warn($"{this.GetType().Name}.{caller}({Name}): {message}");
+        }
+        protected void LogError(string message, [CallerMemberName] string caller = null)
+        {
+            log.Error($"{this.GetType().Name}.{caller}({Name}): {message}");
+        }
 
     }
 }

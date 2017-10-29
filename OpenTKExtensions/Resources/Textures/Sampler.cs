@@ -10,8 +10,6 @@ namespace OpenTKExtensions.Resources
 {
     public class Sampler : ResourceBase, IResource
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
-
         public uint ID { get; private set; } = 0;
         public bool IsLoaded { get { return ID != 0; } }
 
@@ -30,7 +28,7 @@ namespace OpenTKExtensions.Resources
             if (!IsLoaded)
             {
                 ID = (uint)GL.GenSampler();
-                log.Info($"Sampler.Load ({Name}) ID {ID}");
+                LogInfo($"ID = {ID}");
             }
         }
 
