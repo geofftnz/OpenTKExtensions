@@ -24,8 +24,8 @@ namespace HelloWorldGL
         private BufferObject<uint> indexBuffer;
         private Texture tex1;
 
-        //public Texture tex2 { get; set; }
-        public Func<Texture> GetTex2 { get; set; } = null;
+        public Texture tex2 { get; set; }
+        //public Func<Texture> GetTex2 { get; set; } = null;
 
         public TestComponent()
         {
@@ -59,7 +59,7 @@ namespace HelloWorldGL
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             tex1.Bind(TextureUnit.Texture0);
-            var tex2 = GetTex2?.Invoke();
+            //var tex2 = GetTex2?.Invoke();
             if (tex2 != null)
             {
                 tex2.Bind(TextureUnit.Texture1);

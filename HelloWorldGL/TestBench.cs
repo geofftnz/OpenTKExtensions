@@ -68,15 +68,7 @@ namespace HelloWorldGL
             renderTarget.Add(testcomp2 = new TestComponent2());
 
             components.Add(testcomp1 = new TestComponent() { DrawOrder = 2 });
-            //components.Add(new TestComponent2() { DrawOrder = 3 });
-
-            testcomp1.GetTex2 = () => { return renderTarget.GetTexture(0); };
-
-            //renderTarget.Loaded += (s, e) =>
-            //{
-            //    LogTrace($"Rendertarget texture -> component 1: {renderTarget.GetTexture(0)}");
-            //    testcomp1.tex2 = renderTarget.GetTexture(0);
-            //};
+            testcomp1.PreRender += (s, e) => { testcomp1.tex2 = renderTarget.GetTexture(0); };
 
             timer.Start();
         }

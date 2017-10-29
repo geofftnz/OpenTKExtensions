@@ -29,12 +29,10 @@ void main(void)
 	t2 = texture(tex_new,p).rgba;
 
 	vec3 col = vec3(0.5) + pos * 0.5;
-	col.b = 0.6;
 
-	col.r = t1.r;
-	col.g = t2.g;
+	col = mix(col,t1.rgb,t1.a);
+	col = mix(col,t2.rgb,0.5);
 
-	col = t2.rgb;
-	
+
 	out_Colour = vec4(col,1.0);
 }

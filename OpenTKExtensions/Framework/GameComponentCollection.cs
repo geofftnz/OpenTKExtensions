@@ -42,6 +42,7 @@ namespace OpenTKExtensions.Framework
         {
             foreach (var component in this.OfType<IRenderable>().Where(c => c.Visible).OrderBy(c => c.DrawOrder))
             {
+                component.OnPreRender();
                 (component as ITimedComponent)?.StartRenderTimer();
                 component.Render(frameData);
                 (component as ITimedComponent)?.StopRenderTimer();

@@ -10,5 +10,7 @@ namespace OpenTKExtensions.Framework
         bool Visible { get; set; }
         int DrawOrder { get; set; }
         void Render(IFrameRenderData frameData);
+        event EventHandler<EventArgs> PreRender;
+        void OnPreRender();
     }
 }

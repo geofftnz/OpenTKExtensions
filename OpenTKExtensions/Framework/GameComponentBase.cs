@@ -82,7 +82,6 @@ namespace OpenTKExtensions.Framework
         /// </summary>
         public event EventHandler<EventArgs> Loading;
 
-
         public virtual void OnLoading(EventArgs e)
         {
             Loading?.Invoke(this, e);
@@ -108,6 +107,19 @@ namespace OpenTKExtensions.Framework
         {
             Loaded?.Invoke(this, e);
         }
+
+        /// <summary>
+        /// Occurs before this component is being rendered (If it is IRenderable).
+        /// Derived classes should handle this event to set any per-frame resources.
+        /// </summary>
+        public event EventHandler<EventArgs> PreRender;
+
+        public void OnPreRender()
+        {
+            PreRender?.Invoke(this, new EventArgs());
+        }
+
+
 
         public void StartRenderTimer()
         {
