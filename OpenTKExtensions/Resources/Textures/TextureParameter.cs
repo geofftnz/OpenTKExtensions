@@ -18,6 +18,11 @@ namespace OpenTKExtensions.Resources
             Value = value;
         }
 
+        public override string ToString()
+        {
+            return $"{ParameterName}={Value}";
+        }
+
         public void Apply(TextureTarget target)
         {
             // HACK this is nasty.

@@ -1,16 +1,20 @@
-﻿using OpenTK;
+﻿using NLog;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTKExtensions.Filesystem;
 using OpenTKExtensions.Framework;
 using OpenTKExtensions.Resources;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace HelloWorldGL
 {
     public class TestBench : GameWindow
     {
+        private static Logger log = LogManager.GetCurrentClassLogger();
+
         private const string SHADERPATH = @"../../Resources/Shaders;Resources/Shaders";
 
         private GameComponentCollection components = new GameComponentCollection();
@@ -20,6 +24,7 @@ namespace HelloWorldGL
 
         private RenderTargetBase renderTarget;
         private TestComponent testcomp1;
+        private TestComponent2 testcomp2;
 
 
         public class RenderData : IFrameRenderData, IFrameUpdateData
@@ -51,16 +56,27 @@ namespace HelloWorldGL
 
             // TODO: Components.
             components.Add(renderTarget = new RenderTargetBase(false, false, 512, 512) { DrawOrder = 1 });
-            renderTarget.Loading += (s, e) => { renderTarget.SetOutput(0, new TextureSlotParam(PixelInternalFormat.Rgba32f, PixelFormat.Rgba, PixelType.Float)); };
-            renderTarget.Add(new TestComponent2());
+            renderTarget.Loading += (s, e) =>
+            {
+                renderTarget.SetOutput(0, new TextureSlotParam(TextureTarget.Texture2D, PixelInternalFormat.Rgba32f, PixelFormat.Rgba, PixelType.Float, false,
+                    TextureParameter.Create(TextureParameterName.TextureMagFilter, TextureMagFilter.Nearest),
+                    TextureParameter.Create(TextureParameterName.TextureMinFilter, TextureMinFilter.Nearest),
+                    TextureParameter.Create(TextureParameterName.TextureWrapS, TextureWrapMode.Repeat),
+                    TextureParameter.Create(TextureParameterName.TextureWrapT, TextureWrapMode.Repeat)
+                    ));
+            };
+            renderTarget.Add(testcomp2 = new TestComponent2());
 
             components.Add(testcomp1 = new TestComponent() { DrawOrder = 2 });
             //components.Add(new TestComponent2() { DrawOrder = 3 });
 
-            renderTarget.Loaded += (s, e) =>
-            {
-                testcomp1.tex2 = renderTarget.GetTexture(0);
-            };
+            testcomp1.GetTex2 = () => { return renderTarget.GetTexture(0); };
+
+            //renderTarget.Loaded += (s, e) =>
+            //{
+            //    LogTrace($"Rendertarget texture -> component 1: {renderTarget.GetTexture(0)}");
+            //    testcomp1.tex2 = renderTarget.GetTexture(0);
+            //};
 
             timer.Start();
         }
@@ -80,10 +96,12 @@ namespace HelloWorldGL
                 shaderUpdatePoller.Reset();
             }
 
-
             GL.ClearColor(0.0f, 0.1f, 0.2f, 1.0f);
             GL.ClearDepth(1.0);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            //GL.Disable(EnableCap.DepthTest);
+            //GL.Enable(EnableCap.Blend);
+
 
             components.Render(frameData);
 
@@ -108,5 +126,24 @@ namespace HelloWorldGL
             components.Load();
             timer.Start();
         }
+
+
+        protected void LogTrace(string message, [CallerMemberName] string caller = null)
+        {
+            log.Trace($"{this.GetType().Name}.{caller}: {message}");
+        }
+        protected void LogInfo(string message, [CallerMemberName] string caller = null)
+        {
+            log.Info($"{this.GetType().Name}.{caller}: {message}");
+        }
+        protected void LogWarn(string message, [CallerMemberName] string caller = null)
+        {
+            log.Warn($"{this.GetType().Name}.{caller}: {message}");
+        }
+        protected void LogError(string message, [CallerMemberName] string caller = null)
+        {
+            log.Error($"{this.GetType().Name}.{caller}: {message}");
+        }
+
     }
 }

@@ -40,7 +40,7 @@ namespace OpenTKExtensions.Resources
 
         public override string ToString()
         {
-            return $"{Target} {ID} {Width}x{Height} ({InternalFormat},{Format},{Type})";
+            return $"{Target} {ID} {Width}x{Height} [{InternalFormat},{Format},{Type}] params: {string.Join(",", Parameters.Select(p => $"{p.Key}={p.Value}"))}";
         }
 
 
@@ -147,6 +147,7 @@ namespace OpenTKExtensions.Resources
 
         public void UploadEmpty()
         {
+            LogTrace("");
             Bind();
             ApplyParameters();
             GL.TexImage2D(Target, 0, InternalFormat, Width, Height, 0, Format, Type, IntPtr.Zero);
@@ -159,13 +160,13 @@ namespace OpenTKExtensions.Resources
             GL.TexImage2D(target, 0, InternalFormat, Width, Height, 0, Format, Type, IntPtr.Zero);
         }
 
-        private void LogUploading(string message = "uploading...")
+        private void LogUploading(string message = "uploading...", [CallerMemberName]string caller = null)
         {
-            LogTrace(message);
+            LogTrace(message, caller);
         }
-        private void LogDataUploaded<T>(T[] data)
+        private void LogDataUploaded<T>(T[] data, [CallerMemberName]string caller = null)
         {
-            LogTrace($"uploaded {data.Length} texels of {data.GetType().Name}");
+            LogTrace($"uploaded {data.Length} texels of {data.GetType().Name}", caller);
         }
 
         public void UploadImage<T>(TextureTarget target, T[] data) where T : struct

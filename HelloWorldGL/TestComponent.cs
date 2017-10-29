@@ -23,7 +23,9 @@ namespace HelloWorldGL
         private BufferObject<Vector3> vertexBuffer;
         private BufferObject<uint> indexBuffer;
         private Texture tex1;
-        public Texture tex2 { get; set; }
+
+        //public Texture tex2 { get; set; }
+        public Func<Texture> GetTex2 { get; set; } = null;
 
         public TestComponent()
         {
@@ -57,7 +59,16 @@ namespace HelloWorldGL
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             tex1.Bind(TextureUnit.Texture0);
-            tex2?.Bind(TextureUnit.Texture1);
+            var tex2 = GetTex2?.Invoke();
+            if (tex2 != null)
+            {
+                tex2.Bind(TextureUnit.Texture1);
+            }
+            else
+            {
+                LogWarn("Could not get tex2");
+            }
+            
 
             shader.Resource.Use()
                 .SetUniform("projectionMatrix", ProjectionMatrix)

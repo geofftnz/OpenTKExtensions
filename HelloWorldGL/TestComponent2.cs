@@ -23,7 +23,7 @@ namespace HelloWorldGL
 
         public TestComponent2()
         {
-            Resources.Add(shader = new ReloadableResource<ShaderProgram>("p1r", () => new ShaderProgram(
+            Resources.Add(shader = new ReloadableResource<ShaderProgram>("p2r", () => new ShaderProgram(
                  "p2",
                  "vertex",
                  "out_Colour",
@@ -47,9 +47,9 @@ namespace HelloWorldGL
             var fData = frameData as TestBench.RenderData;
 
             GL.Disable(EnableCap.CullFace);
-            GL.Enable(EnableCap.Blend);
+            GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             shader.Resource.Use()
                 .SetUniform("projectionMatrix", ProjectionMatrix)

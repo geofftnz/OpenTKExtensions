@@ -78,6 +78,7 @@ namespace OpenTKExtensions.Resources
 
         public void Load()
         {
+            bool alreadyLoaded = false;
             if (!IsLoaded)
             {
                 GL.GenBuffers(1, out handle);
@@ -99,9 +100,12 @@ namespace OpenTKExtensions.Resources
 
                     // discard data after load.
                     InitialData = null;
+
+                    alreadyLoaded = true;
                 }
 
-                OnReadyForContent();
+                if (!alreadyLoaded)
+                    OnReadyForContent();
             }
         }
 
@@ -125,51 +129,51 @@ namespace OpenTKExtensions.Resources
             EnsureLoaded();
             LogTrace($"Loading...");
 
-            GL.BindBuffer(this.Target, this.Handle);
+            GL.BindBuffer(Target, Handle);
 
-            this.length = data.Length;
-            this.stride = elementSizeInBytes;
-            this.arraySize = length * stride;
+            length = data.Length;
+            stride = elementSizeInBytes;
+            arraySize = length * stride;
             this.pointerType = pointerType;
             this.fieldsPerElement = fieldsPerElement;
 
-            GL.BufferData<TT>(this.Target, new IntPtr(arraySize), data, this.UsageHint);
-            this.HasData = true;
-            GL.BindBuffer(this.Target, 0);
+            GL.BufferData<TT>(Target, new IntPtr(arraySize), data, UsageHint);
+            HasData = true;
+            GL.BindBuffer(Target, 0);
             LogTrace($"Loaded {data.Length} elements, {arraySize} bytes");
         }
 
         public void SetData(Vector4[] data)
         {
-            this.SetData(data, Vector4.SizeInBytes, VertexAttribPointerType.Float, 4);
+            SetData(data, Vector4.SizeInBytes, VertexAttribPointerType.Float, 4);
         }
         public void SetData(Vector3[] data)
         {
-            this.SetData(data, Vector3.SizeInBytes, VertexAttribPointerType.Float, 3);
+            SetData(data, Vector3.SizeInBytes, VertexAttribPointerType.Float, 3);
         }
         public void SetData(Vector2[] data)
         {
-            this.SetData(data, Vector2.SizeInBytes, VertexAttribPointerType.Float, 2);
+            SetData(data, Vector2.SizeInBytes, VertexAttribPointerType.Float, 2);
         }
         public void SetData(uint[] data)
         {
-            this.SetData(data, sizeof(uint), VertexAttribPointerType.UnsignedInt, 1);
+            SetData(data, sizeof(uint), VertexAttribPointerType.UnsignedInt, 1);
         }
         public void SetData(byte[] data)
         {
-            this.SetData(data, sizeof(byte), VertexAttribPointerType.UnsignedByte, 1);
+            SetData(data, sizeof(byte), VertexAttribPointerType.UnsignedByte, 1);
         }
         public void SetData(float[] data)
         {
-            this.SetData(data, sizeof(float), VertexAttribPointerType.Float, 1);
+            SetData(data, sizeof(float), VertexAttribPointerType.Float, 1);
         }
 
         public void Bind(int index)
         {
             EnsureLoaded();
-            GL.BindBuffer(this.Target, this.Handle);
+            GL.BindBuffer(Target, Handle);
 
-            if (this.Target != BufferTarget.ElementArrayBuffer)
+            if (Target != BufferTarget.ElementArrayBuffer)
             {
                 GL.EnableVertexAttribArray(index);
                 GL.VertexAttribPointer(index, fieldsPerElement, pointerType, false, stride, 0);
@@ -179,18 +183,18 @@ namespace OpenTKExtensions.Resources
         public void Bind()
         {
             EnsureLoaded();
-            GL.BindBuffer(this.Target, this.Handle);
+            GL.BindBuffer(Target, Handle);
         }
 
         public void Unbind()
         {
-            GL.BindBuffer(this.Target, 0);
+            GL.BindBuffer(Target, 0);
         }
 
         public IntPtr Map(BufferAccess access)
         {
             EnsureLoaded();
-            var ptr = GL.MapBuffer(this.Target, access);
+            var ptr = GL.MapBuffer(Target, access);
             IsMapped = true;
             return ptr;
         }
@@ -201,7 +205,7 @@ namespace OpenTKExtensions.Resources
             {
                 LogWarn($"Buffer not mapped");
             }
-            GL.UnmapBuffer(this.Target);
+            GL.UnmapBuffer(Target);
             IsMapped = false;
         }
     }

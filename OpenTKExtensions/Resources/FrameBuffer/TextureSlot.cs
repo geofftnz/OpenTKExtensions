@@ -26,7 +26,7 @@ namespace OpenTKExtensions.Resources
         /// <summary>
         /// Index of fragment data output
         /// </summary>
-        public int Slot { get; set; }
+        public int Slot { get; set; } = 0;
 
         /// <summary>
         /// Parameters for texture creation
@@ -59,6 +59,8 @@ namespace OpenTKExtensions.Resources
 
         public void InitTexture(int Width, int Height)
         {
+            if (!Enabled) return;
+
             if (Texture == null && !External)
             {
                 Texture = new Texture($"tex_{Slot:00}", Width, Height, TextureTarget.Texture2D, TextureParam.InternalFormat, TextureParam.Format, TextureParam.Type);

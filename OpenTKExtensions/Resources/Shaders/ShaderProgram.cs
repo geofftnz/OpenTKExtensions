@@ -173,36 +173,37 @@ namespace OpenTKExtensions.Resources
 
             foreach (var s in Shaders.Values)
             {
-                LogInfo($"AttachShader {s.Name} ({s.Type})");
+                LogTrace($"AttachShader {s.Name} ({s.Type})");
                 GL.AttachShader(Handle, s.Handle);
             }
 
             foreach (var v in VariableLocations)
             {
-                LogInfo($"Binding variable {v.Value} to {v.Key}");
+                LogTrace($"Binding variable {v.Value} to {v.Key}");
                 GL.BindAttribLocation(Handle, v.Value, v.Key);
             }
 
             foreach (var i in FragDataLocation.Keys)
             {
-                LogInfo($"Binding fragment output {i} to {FragDataLocation[i]}");
+                LogTrace($"Binding fragment output {i} to {FragDataLocation[i]}");
                 GL.BindFragDataLocation(Handle, i, FragDataLocation[i]);
             }
 
+            LogTrace("Linking...");
             GL.LinkProgram(Handle);
 
             string infoLog = GL.GetProgramInfoLog(Handle).TrimEnd();
             int linkStatus;
             GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out linkStatus);
 
-            string formattedStatus = $"ShaderProgram.Link ({Name}): Link status {linkStatus} {infoLog}";
+            string formattedStatus = $"Link status {linkStatus} {infoLog}";
             if (linkStatus != 1)
             {
-                throw new InvalidOperationException(formattedStatus);
+                throw new InvalidOperationException($"ShaderProgram.Link ({Name}): {formattedStatus}");
             }
             else
             {
-                LogInfo(formattedStatus);
+                LogTrace(formattedStatus);
             }
 
 

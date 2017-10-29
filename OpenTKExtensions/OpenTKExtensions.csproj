@@ -66,6 +66,7 @@
     <Compile Include="Components\FrameCounter.cs" />
     <Compile Include="Components\LineBuffer.cs" />
     <Compile Include="Components\PostProcess\BlendBuffer.cs" />
+    <Compile Include="Components\TextureViewer.cs" />
     <Compile Include="Exceptions\ShaderCompileException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Filesystem\MultiPathFileSystemPoller.cs" />
@@ -160,8 +161,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetPath) $(ProjectDir)\..\..\snowscape\snowscape\lib
-copy /Y $(TargetPath) $(ProjectDir)\..\..\nb3\lib
+    <PostBuildEvent>rem copy /Y $(TargetPath) $(ProjectDir)\..\..\snowscape\snowscape\lib
+rem copy /Y $(TargetPath) $(ProjectDir)\..\..\nb3\lib
 copy /Y $(TargetPath) $(ProjectDir)\..\..\particles\lib</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -28,7 +28,7 @@ namespace OpenTKExtensions.Resources
             if (!IsLoaded)
             {
                 ID = (uint)GL.GenSampler();
-                LogInfo($"ID = {ID}");
+                LogTrace($"ID = {ID}");
             }
         }
 

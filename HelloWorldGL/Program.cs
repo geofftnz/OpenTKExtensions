@@ -17,6 +17,7 @@ namespace HelloWorldGL
         [STAThread]
         static void Main()
         {
+            log.Info($"============== START ==============");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

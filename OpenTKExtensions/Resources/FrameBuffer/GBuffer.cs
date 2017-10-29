@@ -68,7 +68,7 @@ namespace OpenTKExtensions.Resources
 
         public void Load()
         {
-            LogInfo($"Creating G-Buffer of size {Width}x{Height}");
+            LogTrace($"Creating G-Buffer of size {Width}x{Height}");
             FBO.Load();
 
             FBO.Bind();
@@ -81,7 +81,7 @@ namespace OpenTKExtensions.Resources
             SetDrawBuffers();
 
             var status = FBO.GetStatus();
-            LogInfo($"FBO state is {FBO.Status}");
+            LogTrace($"FBO state is {FBO.Status}");
 
             FBO.Unbind();
         }
@@ -114,7 +114,7 @@ namespace OpenTKExtensions.Resources
             TextureSlots[slot].Slot = slot;
             TextureSlots[slot].TextureParam = texparam;
 
-            LogInfo($"Internal texture {slot} = {texparam}");
+            LogTrace($"Internal texture {slot} = {texparam}");
 
             return this;
         }
@@ -133,7 +133,7 @@ namespace OpenTKExtensions.Resources
             TextureSlots[slot].TextureParam = new TextureSlotParam(texture.InternalFormat, texture.Format, texture.Type);
 
 
-            LogInfo($"External texture {slot} = {TextureSlots[slot].TextureParam}");
+            LogTrace($"External texture {slot} = {TextureSlots[slot].TextureParam}");
 
             return this;
         }
@@ -158,8 +158,10 @@ namespace OpenTKExtensions.Resources
                 {
                     if (!TextureSlots[i].External)
                     {
+                        LogTrace($"Init internal texture for slot {TextureSlots[i].Slot}");
                         TextureSlots[i].InitTexture(Width, Height);
                     }
+                    LogTrace($"Attaching slot {TextureSlots[i].Slot} to {FBO.Target}");
                     TextureSlots[i].AttachToFramebuffer(FBO.Target);
                 }
             }
@@ -178,9 +180,10 @@ namespace OpenTKExtensions.Resources
 
         private void SetDrawBuffers()
         {
-            if (TextureSlots.Any(s => s.Enabled))
+            var buffers = TextureSlots.Where(s => s.Enabled).Select(s => s.DrawBufferSlot).ToArray();
+            if (buffers.Length > 0)
             {
-                GL.DrawBuffers(TextureSlots.Where(s => s.Enabled).Count(), TextureSlots.Where(s => s.Enabled).Select(s => s.DrawBufferSlot).ToArray());
+                GL.DrawBuffers(buffers.Length, buffers);
             }
         }
 
@@ -202,14 +205,14 @@ namespace OpenTKExtensions.Resources
             DepthTexture.Set(TextureParameterName.TextureCompareMode, TextureCompareMode.None);
             DepthTexture.Set(TextureParameterName.TextureCompareFunc, All.None);
 
-            // TODO: Load texture
-            //this.DepthTexture.Init();
+            DepthTexture.Load();
+            LogTrace($"Depth Texture: {DepthTexture}");
             DepthTexture.UploadEmpty();
             DepthTexture.Bind();
             GL.FramebufferTexture2D(FBO.Target, FramebufferAttachment.DepthAttachment, TextureTarget.Texture2D, DepthTexture.ID, 0);
         }
 
-        public void BindForWriting()
+        public void BindForWriting() 
         {
             FBO.Bind(FramebufferTarget.DrawFramebuffer);
             GL.Viewport(0, 0, Width, Height);
@@ -250,6 +253,7 @@ namespace OpenTKExtensions.Resources
             {
                 GL.Enable(EnableCap.Texture2D);
                 ts.Texture.Bind();
+                ts.Texture.ApplyParameters();
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             }
         }

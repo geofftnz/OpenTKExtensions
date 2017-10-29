@@ -40,7 +40,7 @@ namespace OpenTKExtensions.Resources
             if (!IsLoaded)
             {
                 ID = GL.GenFramebuffer();
-                LogInfo($" ID = {ID}");
+                LogTrace($" ID = {ID}");
             }
         }
 

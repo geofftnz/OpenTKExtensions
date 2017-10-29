@@ -41,11 +41,11 @@ namespace OpenTKExtensions.Framework
         /// </summary>
         public void Load()
         {
-            log.Info("GameComponentBase.Load({0}) loading", GetType().Name);
+            LogTrace("loading");
 
             if (Status != ComponentStatus.New && Status != ComponentStatus.Unloaded)
             {
-                log.Info("GameComponentBase.Load({0}) already loaded", GetType().Name);
+                LogInfo("already loaded");
                 return;
             }
 
@@ -55,16 +55,16 @@ namespace OpenTKExtensions.Framework
             Status = ComponentStatus.Loaded;
             OnLoaded(EventArgs.Empty);
 
-            log.Info("GameComponentBase.Load({0}) loaded", GetType().Name);
+            LogTrace("loaded");
         }
 
         public void Unload()
         {
-            log.Info("GameComponentBase.Unload({0}) unloading", GetType().Name);
+            LogTrace("unloading");
 
             if (Status != ComponentStatus.Loaded)
             {
-                log.Info("GameComponentBase.Unload({0}) already unloaded", GetType().Name);
+                LogInfo("already unloaded");
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace OpenTKExtensions.Framework
             OnUnloading(EventArgs.Empty);
             Resources.Unload();
             Status = ComponentStatus.Unloaded;
-            log.Info("GameComponentBase.Unload({0}) unloaded", GetType().Name);
+            LogTrace("unloaded");
         }
 
 
@@ -121,21 +121,26 @@ namespace OpenTKExtensions.Framework
             lastRenderTime = renderTimer.Elapsed;
         }
 
+        private string LogPad()
+        {
+            return string.Join("", Enumerable.Range(0, new StackTrace().FrameCount).Select(i => " "));
+        }
+
         protected void LogTrace(string message, [CallerMemberName] string caller = null)
         {
-            log.Trace($"{this.GetType().Name}.{caller}: {message}");
+            log.Trace($"{LogPad()}{this.GetType().Name}.{caller}: {message}");
         }
         protected void LogInfo(string message, [CallerMemberName] string caller = null)
         {
-            log.Info($"{this.GetType().Name}.{caller}: {message}");
+            log.Info($"{LogPad()}{this.GetType().Name}.{caller}: {message}");
         }
         protected void LogWarn(string message, [CallerMemberName] string caller = null)
         {
-            log.Warn($"{this.GetType().Name}.{caller}: {message}");
+            log.Warn($"{LogPad()}{this.GetType().Name}.{caller}: {message}");
         }
         protected void LogError(string message, [CallerMemberName] string caller = null)
         {
-            log.Error($"{this.GetType().Name}.{caller}: {message}");
+            log.Error($"{LogPad()}{this.GetType().Name}.{caller}: {message}");
         }
 
     }

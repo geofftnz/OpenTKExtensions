@@ -33,13 +33,13 @@ namespace OpenTKExtensions.Framework
 
         public void SetOutput(int index, TextureSlotParam texparam)
         {
-            LogInfo($"{index} -> {texparam}");
+            LogTrace($"{index} -> {texparam}");
             OutputBuffer.SetSlot(index, texparam);
         }
 
         public void SetOutput(int index, Texture texture)
         {
-            LogInfo($"{index} -> {texture}");
+            LogTrace($"{index} -> {texture}");
             OutputBuffer.SetSlot(index, texture);
         }
 
@@ -52,6 +52,8 @@ namespace OpenTKExtensions.Framework
         {
             OutputBuffer.BindForWriting();
             OutputBuffer.ClearColourBuffer(0, new Vector4(0f));
+            GL.Disable(EnableCap.Blend);
+            GL.Disable(EnableCap.DepthTest);
 
             Components.Render(frameData);
 

@@ -18,8 +18,8 @@ void main()
 precision highp float;
 layout (location = 0) in vec3 pos;
 layout (location = 0) out vec4 out_Colour;
-uniform sampler2D tex1;
 uniform sampler2D tex2;
+uniform sampler2D tex1;
 
 void main(void)
 {
@@ -29,8 +29,8 @@ void main(void)
 	vec3 col = vec3(0.5) + pos * 0.5;
 	col.b = 0.6;
 
-	col.r += t1.r * 0.2;
-	col.g += t2.g * 0.2;
+	col.r = t1.r;
+	col.g = t2.g;
 	
 	out_Colour = vec4(col,1.0);
 }

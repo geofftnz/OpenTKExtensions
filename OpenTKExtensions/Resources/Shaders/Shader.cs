@@ -59,7 +59,7 @@ namespace OpenTKExtensions.Resources
             }
             else
             {
-                LogInfo($"{infoLog}");
+                LogTrace($"{infoLog}");
             }
         }
 
