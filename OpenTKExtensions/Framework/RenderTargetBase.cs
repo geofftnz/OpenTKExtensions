@@ -50,6 +50,7 @@ namespace OpenTKExtensions.Framework
 
         public override void Render(IFrameRenderData frameData)
         {
+
             OutputBuffer.BindForWriting();
             OutputBuffer.ClearColourBuffer(0, new Vector4(0f));
             GL.Disable(EnableCap.Blend);

@@ -25,6 +25,8 @@ namespace OpenTKExtensions.Resources
         public int Height { get; private set; }
         public bool WantDepth { get; set; }
 
+        private int[] previousViewport = new int[4];
+      
         public class ResizedEventArgs : EventArgs
         {
             public int Width { get; private set; }
@@ -212,8 +214,19 @@ namespace OpenTKExtensions.Resources
             GL.FramebufferTexture2D(FBO.Target, FramebufferAttachment.DepthAttachment, TextureTarget.Texture2D, DepthTexture.ID, 0);
         }
 
+        private void SaveViewport()
+        {
+            GL.GetInteger(GetPName.Viewport, previousViewport);
+        }
+
+        private void RestoreViewport()
+        {
+            GL.Viewport(previousViewport[0], previousViewport[1], previousViewport[2], previousViewport[3]);
+        }
+
         public void BindForWriting() 
         {
+            SaveViewport();
             FBO.Bind(FramebufferTarget.DrawFramebuffer);
             GL.Viewport(0, 0, Width, Height);
             SetDrawBuffers();
@@ -232,7 +245,7 @@ namespace OpenTKExtensions.Resources
         public void BindForWritingTo(params TextureSlot[] outputTextures)
         {
             // shouldn't call this if we've got any texture slots defined.
-
+            SaveViewport();
             FBO.Bind(FramebufferTarget.DrawFramebuffer);
             GL.Viewport(0, 0, Width, Height);
 
@@ -247,6 +260,7 @@ namespace OpenTKExtensions.Resources
         public void UnbindFromWriting()
         {
             FBO.Unbind(FramebufferTarget.DrawFramebuffer);
+            RestoreViewport();
 
             // generate any requested mipmaps
             foreach (var ts in TextureSlots.Where(s => s.Enabled && s.TextureParam.MipMaps))

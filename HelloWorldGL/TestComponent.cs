@@ -52,14 +52,13 @@ namespace HelloWorldGL
 
         public void Render(IFrameRenderData frameData)
         {
-            GL.Viewport(0, 0, Width, Height);
             GL.Disable(EnableCap.CullFace);
             GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.Texture2D);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
             tex1.Bind(TextureUnit.Texture0);
-            //var tex2 = GetTex2?.Invoke();
+
             if (tex2 != null)
             {
                 tex2.Bind(TextureUnit.Texture1);
