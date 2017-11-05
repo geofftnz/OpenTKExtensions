@@ -58,7 +58,7 @@ namespace OpenTKExtensions.Framework
         {
         }
 
-        public void Render(IFrameRenderData frameData)
+        public virtual void Render(IFrameRenderData frameData)
         {
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
@@ -74,7 +74,7 @@ namespace OpenTKExtensions.Framework
         }
 
 
-        public void Reload()
+        public virtual void Reload()
         {
             Resources.Reload();
         }

@@ -162,7 +162,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rem copy /Y $(TargetPath) $(ProjectDir)\..\..\snowscape\snowscape\lib
-rem copy /Y $(TargetPath) $(ProjectDir)\..\..\nb3\lib
+copy /Y $(TargetPath) $(ProjectDir)\..\..\nb3\lib
 copy /Y $(TargetPath) $(ProjectDir)\..\..\particles\lib</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,10 +20,11 @@ namespace OpenTKExtensions.Resources
         public int Width { get; private set; }
         public int Height { get; private set; }
         public bool IsLoaded { get { return ID != -1; } }
+        public bool LoadEmpty { get; set; } = false;
 
         public Dictionary<TextureParameterName, ITextureParameter> Parameters { get; } = new Dictionary<TextureParameterName, ITextureParameter>();
 
-        public Texture(string name, int width, int height, TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type) : base(name)
+        public Texture(string name, int width, int height, TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type, params ITextureParameter[] texParams) : base(name)
         {
             Target = target;
             InternalFormat = internalFormat;
@@ -31,12 +32,62 @@ namespace OpenTKExtensions.Resources
             Height = height;
             Format = format;
             Type = type;
+
+            foreach (var p in texParams)
+            {
+                SetParameter(p);
+            }
         }
 
         public Texture(int width, int height, TextureTarget target, PixelInternalFormat internalFormat, PixelFormat format, PixelType type)
             : this("unnamed", width, height, target, internalFormat, format, type)
         {
         }
+
+        // static helpers
+        #region construction helpers
+        public static Texture RGBA32f(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgba32f, PixelFormat.Rgba, PixelType.Float, texParams);
+        }
+        public static Texture RGBA16f(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgba16f, PixelFormat.Rgba, PixelType.HalfFloat, texParams);
+        }
+        public static Texture RGBA(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgba, PixelFormat.Rgba, PixelType.UnsignedByte, texParams);
+        }
+        public static Texture RGB24f(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgb32f, PixelFormat.Rgb, PixelType.Float, texParams);
+        }
+        public static Texture RGB12f(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgb16f, PixelFormat.Rgb, PixelType.HalfFloat, texParams);
+        }
+        public static Texture RGB(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgb, PixelFormat.Rgb, PixelType.UnsignedByte, texParams);
+        }
+        public static Texture RG32f(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rg32f, PixelFormat.Rg, PixelType.Float, texParams);
+        }
+        public static Texture R32f(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.R32f, PixelFormat.Red, PixelType.Float, texParams);
+        }
+        public static Texture RG(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rg8, PixelFormat.Rg, PixelType.UnsignedByte, texParams);
+        }
+        public static Texture R(string name, int width, int height, params ITextureParameter[] texParams)
+        {
+            return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.R8, PixelFormat.Red, PixelType.UnsignedByte, texParams);
+        }
+        #endregion
+
 
         public override string ToString()
         {
@@ -55,7 +106,11 @@ namespace OpenTKExtensions.Resources
                 //  throw new Exception($"Texture.Load ({Name}) generated texture ID {ID} is not a texture");
 
                 LogTrace($"ID = {ID}");
-                OnReadyForContent();
+
+                if (LoadEmpty)
+                    UploadEmpty();
+                else
+                    OnReadyForContent();
             }
         }
 

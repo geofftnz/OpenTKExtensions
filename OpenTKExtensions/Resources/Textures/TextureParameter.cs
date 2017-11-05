@@ -51,5 +51,10 @@ namespace OpenTKExtensions.Resources
         {
             return new TextureParameter<U>(name, value);
         }
+
+        public static ITextureParameter SetTo<T>(this TextureParameterName name, T value) where T : struct, IConvertible
+        {
+            return new TextureParameter<T>(name, value);
+        }
     }
 }
