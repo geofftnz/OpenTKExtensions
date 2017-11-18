@@ -50,7 +50,7 @@ namespace OpenTKExtensions.Text
         {
             if (!Blocks.ContainsKey(b.Name))
             {
-                LogTrace($"TextManager.Add ({Name}): Adding \"{b.Text}\"");
+                //LogTrace($"TextManager.Add ({Name}): Adding \"{b.Text}\"");
                 Blocks.Add(b.Name, b);
                 NeedsRefresh = true;
                 return true;
@@ -98,17 +98,11 @@ namespace OpenTKExtensions.Text
 
         public void Refresh()
         {
-            LogTrace($"({Name}): Refreshing {Blocks.Count} blocks...");
+            //LogTrace($"({Name}): Refreshing {Blocks.Count} blocks...");
 
             if (Font == null)
             {
                 LogWarn($"({Name}): Font not specified so bailing out.");
-                return;
-            }
-
-            if (!Font.IsLoaded)
-            {
-                LogWarn($"({Name}): Font not loaded so bailing out.");
                 return;
             }
 
@@ -133,11 +127,6 @@ namespace OpenTKExtensions.Text
             if (Font == null)
             {
                 LogWarn($"({Name}): Font not specified so bailing out.");
-                return;
-            }
-            if (!Font.IsLoaded)
-            {
-                LogWarn($"({Name}): Font not loaded so bailing out.");
                 return;
             }
 

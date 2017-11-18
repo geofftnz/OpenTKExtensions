@@ -161,7 +161,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rem copy /Y $(TargetPath) $(ProjectDir)\..\..\snowscape\snowscape\lib
+    <PostBuildEvent>copy /Y $(TargetPath) $(ProjectDir)\..\..\snowscape\snowscape\lib
 copy /Y $(TargetPath) $(ProjectDir)\..\..\nb3\lib
 copy /Y $(TargetPath) $(ProjectDir)\..\..\particles\lib</PostBuildEvent>
   </PropertyGroup>

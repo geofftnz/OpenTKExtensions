@@ -127,7 +127,7 @@ namespace OpenTKExtensions.Resources
                 return;  // silently fail
 
             EnsureLoaded();
-            LogTrace($"Loading...");
+            //LogTrace($"Loading...");
 
             GL.BindBuffer(Target, Handle);
 
@@ -140,7 +140,7 @@ namespace OpenTKExtensions.Resources
             GL.BufferData<TT>(Target, new IntPtr(arraySize), data, UsageHint);
             HasData = true;
             GL.BindBuffer(Target, 0);
-            LogTrace($"Loaded {data.Length} elements, {arraySize} bytes");
+            //LogTrace($"Loaded {data.Length} elements, {arraySize} bytes");
         }
 
         public void SetData(Vector4[] data)

@@ -9,10 +9,19 @@ using OpenTK.Input;
 
 namespace OpenTKExtensions.Camera
 {
-    /*
+
     // credit: opcon, from http://www.opentk.com/node/3016
+    // https://github.com/opcon/revolution/blob/master/Source/Revolution/Revolution/Core/QuaternionCamera.cs
+/*
     public class QuaternionCamera : ICamera
     {
+        public enum CamMode
+        {
+            FlightCamera,
+            FirstPerson,
+            NoClip
+        }
+
         #region Constructors
 
         /// <summary>
@@ -47,7 +56,7 @@ namespace OpenTKExtensions.Camera
 
         public QuaternionCamera(MouseDevice moused, KeyboardDevice keyd, INativeWindow game, Vector3 position = new Vector3(), Quaternion orientation = new Quaternion(), bool mouseLook = true)
         {
-            Speed = 0.2f;
+            Speed = 50.0f;
             TargetPosition = Position = position;
             TargetOrientation = Orientation = orientation;
             m_Mouse = moused;
@@ -86,27 +95,14 @@ namespace OpenTKExtensions.Camera
 
         protected bool m_MouseLookEnabled;
         public bool MouseLookEnabled
-        {
-            get { return m_MouseLookEnabled; }
-            set
-            {
-                m_MouseLookEnabled = value;
-                if (MouseLookEnabled)
-                {
-                    Cursor.Hide(); ResetMouse();
-                }
-                else
-                {
-                    Cursor.Show();
-                }
-            }
-        }
+        { get { return m_MouseLookEnabled; } set { m_MouseLookEnabled = value; if (MouseLookEnabled) { Cursor.Hide(); ResetMouse(); } else Cursor.Show(); } }
 
         public float MouseYSensitivity { get; set; }
         public float MouseXSensitivity { get; set; }
 
         public Vector2 MouseRotation;
         public Vector3 Movement;
+        public Vector3 Velocity;
 
         public float Speed { get; set; }
         public float Acceleration { get; set; }
@@ -172,7 +168,7 @@ namespace OpenTKExtensions.Camera
         public void GetModelviewMatrix(out Matrix4 matrix)
         {
             var translationMatrix = Matrix4.CreateTranslation(-Position);
-            var rotationMatrix = Matrix4.CreateFromQuaternion(Orientation);
+            var rotationMatrix = Matrix4.Rotate(Orientation);
             Matrix4.Mult(ref translationMatrix, ref rotationMatrix, out matrix);
         }
 
@@ -239,7 +235,6 @@ namespace OpenTKExtensions.Camera
         /// </summary>
         protected void ResetMouse()
         {
-            
             if (m_ParentGame.WindowState == WindowState.Fullscreen)
             {
                 Cursor.Position = WindowCenter;
@@ -274,7 +269,7 @@ namespace OpenTKExtensions.Camera
         /// <param name="time">
         /// A <see cref="System.Double"/> containing the time since the last update
         /// </param>
-        protected void UpdateRotations(double time)
+        public void UpdateRotations(double time)
         {
             CalculateMouseDelta();
             MouseRotation.X += (float)(m_MouseDelta.X * MouseXSensitivity * time);
@@ -303,50 +298,51 @@ namespace OpenTKExtensions.Camera
         /// <param name="time">
         /// A <see cref="System.Double"/> containing the time since the last update
         /// </param>
-        protected void UpdateMovement(double time)
+        public void UpdateMovement(double time)
         {
             if (m_Keyboard[Key.W] && !m_Keyboard[Key.S])
             {
                 Movement.Z = 0;
-                Movement.Z -= Speed * (float)time;
+                Movement.Z -= Speed;
             }
             else if (m_Keyboard[Key.S] && !m_Keyboard[Key.W])
             {
                 Movement.Z = 0;
-                Movement.Z += Speed * (float)time;
+                Movement.Z += Speed;
             }
             else Movement.Z = 0.0f;
 
             if (m_Keyboard[Key.A] && !m_Keyboard[Key.D])
             {
                 Movement.X = 0.0f;
-                Movement.X -= Speed * (float)time;
+                Movement.X -= Speed;
             }
             else if (m_Keyboard[Key.D] && !m_Keyboard[Key.A])
             {
                 Movement.X = 0.0f;
-                Movement.X += Speed * (float)time;
+                Movement.X += Speed;
             }
             else
                 Movement.X = 0.0f;
 
-            if (CameraMode == CamMode.FirstPerson)
-            {
-                TargetPosition += Vector3.Transform(Movement, Quaternion.Invert(TargetOrientationY));
-                TargetPosition = new Vector3(TargetPosition.X, 5, TargetPosition.Z);
-            }
-            else
-                TargetPosition += Vector3.Transform(Movement, Quaternion.Invert(Orientation));
+            //TargetPosition += Vector3.Transform(Movement, Quaternion.Invert(Orientation));
+
+            Velocity = Vector3.Transform(Movement, Quaternion.Invert(Orientation));
+
+            TargetPosition += Velocity * (float)time;
+
             if (CameraMode != CamMode.FlightCamera)
                 Position = TargetPosition;
 
-            Console.WriteLine("Position={0}", Position);
+            //Console.WriteLine("Position={0}", Position);
         }
 
         #endregion
 
         #endregion
 
+
+
     }
-     */ 
+*/
 }

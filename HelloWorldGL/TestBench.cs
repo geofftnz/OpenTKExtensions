@@ -2,9 +2,11 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using OpenTKExtensions.Components;
 using OpenTKExtensions.Filesystem;
 using OpenTKExtensions.Framework;
 using OpenTKExtensions.Resources;
+using OpenTKExtensions.Text;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -22,6 +24,7 @@ namespace HelloWorldGL
         //private double lastShaderPollTime = 0.0;
         private Stopwatch timer = new Stopwatch();
 
+        private Font font;
         private RenderTargetBase renderTarget;
         private TestComponent testcomp1;
         private TestComponent2 testcomp2;
@@ -54,7 +57,8 @@ namespace HelloWorldGL
             RenderFrame += TestBench_RenderFrame;
             Resize += TestBench_Resize;
 
-            // TODO: Components.
+            components.Add(font = new Font("Resources/Fonts/consolab.ttf_sdf_512.png", "Resources/Fonts/consolab.ttf_sdf_512.txt"));
+            
             components.Add(renderTarget = new RenderTargetBase(false, false, 512, 512) { DrawOrder = 1 });
             renderTarget.Loading += (s, e) =>
             {
@@ -66,9 +70,12 @@ namespace HelloWorldGL
                     ));
             };
             renderTarget.Add(testcomp2 = new TestComponent2());
-
+            
             components.Add(testcomp1 = new TestComponent() { DrawOrder = 2 });
             testcomp1.PreRender += (s, e) => { testcomp1.tex2 = renderTarget.GetTexture(0); };
+
+            components.Add(new FrameCounter(font) { DrawOrder = 3 });
+
 
             timer.Start();
         }
