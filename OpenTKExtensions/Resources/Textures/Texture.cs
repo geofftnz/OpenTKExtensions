@@ -58,11 +58,11 @@ namespace OpenTKExtensions.Resources
         {
             return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgba, PixelFormat.Rgba, PixelType.UnsignedByte, texParams);
         }
-        public static Texture RGB24f(string name, int width, int height, params ITextureParameter[] texParams)
+        public static Texture RGB32f(string name, int width, int height, params ITextureParameter[] texParams)
         {
             return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgb32f, PixelFormat.Rgb, PixelType.Float, texParams);
         }
-        public static Texture RGB12f(string name, int width, int height, params ITextureParameter[] texParams)
+        public static Texture RGB16f(string name, int width, int height, params ITextureParameter[] texParams)
         {
             return new Texture(name, width, height, TextureTarget.Texture2D, PixelInternalFormat.Rgb16f, PixelFormat.Rgb, PixelType.HalfFloat, texParams);
         }
@@ -88,6 +88,10 @@ namespace OpenTKExtensions.Resources
         }
         #endregion
 
+        public static IEnumerable<ITextureParameter> Params()
+        {
+            yield break;
+        }
 
         public override string ToString()
         {
