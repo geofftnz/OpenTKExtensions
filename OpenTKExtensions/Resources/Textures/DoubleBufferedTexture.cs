@@ -26,7 +26,7 @@ namespace OpenTKExtensions.Resources
         {
             get
             {
-                return Get(t => t.LoadEmpty); 
+                return Get(t => t.LoadEmpty);
             }
             set
             {
@@ -58,7 +58,7 @@ namespace OpenTKExtensions.Resources
         {
         }
 
-        public DoubleBufferedTexture(Texture t0, Texture t1)
+        public DoubleBufferedTexture(string name, Texture t0, Texture t1) : base(name)
         {
             if (t0 == null)
                 throw new ArgumentNullException("t0");
@@ -70,6 +70,18 @@ namespace OpenTKExtensions.Resources
             Textures = new Texture[NUMTEXTURES];
             Textures[0] = t0;
             Textures[1] = t1;
+        }
+        public DoubleBufferedTexture(string name, Func<Texture> textureFactory)
+        {
+            if (textureFactory == null)
+                throw new ArgumentNullException("textureFactory");
+
+            Textures = new Texture[NUMTEXTURES];
+            for (int i = 0; i < NUMTEXTURES; i++)
+            {
+                Textures[i] = textureFactory();
+                Textures[i].LoadEmpty = true;
+            }
         }
 
         public void Swap()
@@ -98,7 +110,7 @@ namespace OpenTKExtensions.Resources
                     action(Textures[i]);
         }
 
-        private T Get<T>(Func<Texture,T> func)
+        private T Get<T>(Func<Texture, T> func)
         {
             if (func == null)
                 throw new ArgumentNullException("func");

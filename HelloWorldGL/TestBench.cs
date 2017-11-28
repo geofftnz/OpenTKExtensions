@@ -8,6 +8,7 @@ using OpenTKExtensions.Framework;
 using OpenTKExtensions.Resources;
 using OpenTKExtensions.Text;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -63,10 +64,7 @@ namespace HelloWorldGL
             renderTarget.Loading += (s, e) =>
             {
                 renderTarget.SetOutput(0, new TextureSlotParam(TextureTarget.Texture2D, PixelInternalFormat.Rgba32f, PixelFormat.Rgba, PixelType.Float, false,
-                    TextureParameter.Create(TextureParameterName.TextureMagFilter, TextureMagFilter.Nearest),
-                    TextureParameter.Create(TextureParameterName.TextureMinFilter, TextureMinFilter.Nearest),
-                    TextureParameter.Create(TextureParameterName.TextureWrapS, TextureWrapMode.Repeat),
-                    TextureParameter.Create(TextureParameterName.TextureWrapT, TextureWrapMode.Repeat)
+                    Texture.Params().FilterNearest().Repeat().ToArray()
                     ));
             };
             renderTarget.Add(testcomp2 = new TestComponent2());
