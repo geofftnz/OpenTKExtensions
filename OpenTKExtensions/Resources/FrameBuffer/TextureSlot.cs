@@ -83,6 +83,7 @@ namespace OpenTKExtensions.Resources
             {
                 Texture.Unload();
                 Texture = null;
+                Enabled = false;
             }
         }
         public void AttachToFramebuffer(FramebufferTarget target)

@@ -128,6 +128,9 @@ namespace OpenTKExtensions.Resources
                 throw new InvalidOperationException("GBuffer.SetSlotTextureParams: slot out of range.");
             }
 
+            if (!TextureSlots[slot].External)
+                UnloadTextureAtSlot(slot);
+
             TextureSlots[slot].Enabled = true;
             TextureSlots[slot].External = true;
             TextureSlots[slot].Slot = slot;
@@ -173,10 +176,15 @@ namespace OpenTKExtensions.Resources
         {
             for (int i = 0; i < MAXSLOTS; i++)
             {
-                if (TextureSlots[i].Enabled && !TextureSlots[i].External)
-                {
-                    TextureSlots[i].UnloadTexture();
-                }
+                UnloadTextureAtSlot(i);
+            }
+        }
+
+        private void UnloadTextureAtSlot(int i)
+        {
+            if (TextureSlots[i].Enabled && !TextureSlots[i].External)
+            {
+                TextureSlots[i].UnloadTexture();
             }
         }
 
