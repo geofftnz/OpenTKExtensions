@@ -1,4 +1,4 @@
-﻿using OpenTKExtensions.Resources.Old;
+﻿using OpenTKExtensions.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;

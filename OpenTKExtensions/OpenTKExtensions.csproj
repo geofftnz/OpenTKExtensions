@@ -79,6 +79,7 @@
     <Compile Include="Framework\OperatorComponentBase.cs" />
     <Compile Include="Framework\OperatorOutput.cs" />
     <Compile Include="Input\KeyboardActionManager.cs" />
+    <Compile Include="Input\KeySpec.cs" />
     <Compile Include="Loaders\MultiPathFileSystemLoader.cs" />
     <Compile Include="Loaders\MemoryLoader.cs" />
     <Compile Include="Loaders\ShaderLoaderBase.cs" />
