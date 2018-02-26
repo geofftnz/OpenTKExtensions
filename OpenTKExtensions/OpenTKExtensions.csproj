@@ -72,7 +72,9 @@
     <Compile Include="Filesystem\MultiPathFileSystemPoller.cs" />
     <Compile Include="Filesystem\FileSystemPoller.cs" />
     <Compile Include="Framework\ComponentSwitcher.cs" />
+    <Compile Include="Framework\ICompositeGameComponent.cs" />
     <Compile Include="Framework\IKeyboardControllable.cs" />
+    <Compile Include="Framework\IRenderTarget.cs" />
     <Compile Include="Framework\ITimedComponent.cs" />
     <Compile Include="Framework\ITransformable.cs" />
     <Compile Include="Framework\RenderTargetBase.cs" />

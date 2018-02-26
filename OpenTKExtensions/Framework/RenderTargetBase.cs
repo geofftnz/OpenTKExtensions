@@ -14,10 +14,13 @@ namespace OpenTKExtensions.Framework
     /// <summary>
     /// Base class for an "operator" component: one that renders to one or more render targets. 
     /// </summary>
-    public class RenderTargetBase : CompositeGameComponent, IGameComponent, IRenderable, IResizeable, IReloadable
+    public class RenderTargetBase : CompositeGameComponent, IGameComponent, IRenderable, IResizeable, IReloadable, IRenderTarget
     {
         protected GBuffer OutputBuffer;
         public bool InheritSizeFromParent { get; set; } = false;
+
+        //TODO: Should this be an event?
+        public Action<IRenderTarget> SetBuffers { get; set; } = null;
 
         public RenderTargetBase(bool wantDepth = false, bool inheritSize = false, int width = 256, int height = 256)
         {
@@ -50,6 +53,7 @@ namespace OpenTKExtensions.Framework
 
         public override void Render(IFrameRenderData frameData)
         {
+            SetBuffers?.Invoke(this);
 
             OutputBuffer.BindForWriting();
             OutputBuffer.ClearColourBuffer(0, new Vector4(0f));

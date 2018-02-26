@@ -6,7 +6,7 @@ using OpenTK.Input;
 
 namespace OpenTKExtensions.Framework
 {
-    public class CompositeGameComponent : GameComponentBase, IResizeable, IReloadable, IUpdateable, IRenderable, IKeyboardControllable
+    public class CompositeGameComponent : GameComponentBase, IResizeable, IReloadable, IUpdateable, IRenderable, IKeyboardControllable, ICompositeGameComponent
     {
         protected GameComponentCollection components = new GameComponentCollection();
         public GameComponentCollection Components
