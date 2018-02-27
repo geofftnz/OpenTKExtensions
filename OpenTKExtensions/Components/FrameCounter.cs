@@ -21,6 +21,8 @@ namespace OpenTKExtensions.Components
         public Vector3 Position { get { return textBlock.Position; } set { textBlock.Position = value; } }
         public Vector4 Colour { get { return textBlock.Colour; } set { textBlock.Colour = value; } }
 
+        public long FrameCount { get { return frameCount; } }
+
         //public bool Visible { get; set; }
         //public int DrawOrder { get; set; }
 

@@ -26,7 +26,7 @@ namespace OpenTKExtensions.Resources
         public bool WantDepth { get; set; }
 
         private int[] previousViewport = new int[4];
-      
+
         public class ResizedEventArgs : EventArgs
         {
             public int Width { get; private set; }
@@ -232,7 +232,7 @@ namespace OpenTKExtensions.Resources
             GL.Viewport(previousViewport[0], previousViewport[1], previousViewport[2], previousViewport[3]);
         }
 
-        public void BindForWriting() 
+        public void BindForWriting()
         {
             SaveViewport();
             FBO.Bind(FramebufferTarget.DrawFramebuffer);
@@ -243,7 +243,11 @@ namespace OpenTKExtensions.Resources
                 GL.Enable(EnableCap.DepthTest);
                 GL.DepthMask(true);
             }
+        }
 
+        public void BindForWritingMulti()
+        {
+            BindForWritingTo(TextureSlots.Where(s => s.Enabled).ToArray());
         }
 
         /// <summary>
@@ -312,6 +316,11 @@ namespace OpenTKExtensions.Resources
         public void ClearColourBuffer(int drawBuffer, Vector4 colour)
         {
             FBO.ClearColourBuffer(drawBuffer, colour);
+        }
+        public void ClearAllColourBuffers(Vector4 colour)
+        {
+            foreach (var slot in TextureSlots.Where(s => s.Enabled).Select(s => s.Slot))
+                FBO.ClearColourBuffer(slot, colour);
         }
 
     }

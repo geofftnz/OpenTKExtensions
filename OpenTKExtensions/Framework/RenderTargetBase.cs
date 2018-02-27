@@ -55,8 +55,9 @@ namespace OpenTKExtensions.Framework
         {
             SetBuffers?.Invoke(this);
 
-            OutputBuffer.BindForWriting();
-            OutputBuffer.ClearColourBuffer(0, new Vector4(0f));
+            OutputBuffer.BindForWritingMulti();
+            //OutputBuffer.ClearColourBuffer(0, new Vector4(0f));
+            OutputBuffer.ClearAllColourBuffers(new Vector4(0f));
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
 
