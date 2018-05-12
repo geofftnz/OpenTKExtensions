@@ -1,0 +1,62 @@
+NumberXaero
+Advanced Member
+
+Member
+ 2624
+646 posts
+2 pixels
+Joined April 2002
+Posted September 22, 2009
+If you want to use this camera with other APIs such as DirectX youll want to keep your use of opengl for doing math to a minimum. There is a user on these boards who has this link posted with his replies, its a math lib thats free, I havent used it myself but might help, http://www.cmldev.net/.
+
+Something like this might be what your after
+
+
+////Collect your pitch yaw and roll amounts from input
+
+// in degrees
+float pitchX += inputUpDown;	// angle
+float yawY += inputLeftRight;	// angle
+float rollZ += /*some input that triggers roll*/   // angle
+// keep these in the range 0 - 360
+
+////Then update the orientation using these angles each frame using a quaternion or matrix
+
+// convert angles to radians and use here in an Update()
+quaternion qpitch, qyaw;
+qpitch.FromAxisAngle(vec3(1, 0, 0), pitchX); 
+qyaw.FromAxisAngle(vec3(0, 1, 0), yawY);
+
+quaternion pitchedYawed = qyaw * qpitch;
+
+vec3 localZAxis = pitchedYawed * vec3(0, 0, 1);
+quaternion qroll;
+qroll.FromAxisAngle(localZAxis, rollZ);
+
+// save this in camera each frame and use it for strafing the camera positon next frame
+quaternion pitchedYawedRolled = qroll * pitchedYawed;
+
+///Then pass it to OpenGL before rendering
+
+// assumes camera has no parent affecting it, in which case,
+// local "pitchedYawedRolled"  equals world "pitchedYawedRolled"
+vec3 worldUp = pitchedYawedRolled * vec3(0, 1, 0);
+vec3 worldRight = pitchedYawedRolled * vec3(1, 0, 0);
+vec3 worldDir = worldUp.Cross(worldRight);
+
+vec3 worldPos = /*keep track of it*/
+
+vec3 target = worldPos + worldDir;
+
+glMatrixMode(GL_MODELVIEW);
+glLoadIdentity();
+gluLookAt(worldPos.x, worldPos.y, worldPos.z, 
+	  target.x, target.y, target.z,
+          worldUp.x, worldUp.y, worldUp.z);
+
+////Tracking position of camera can be done, using orientation calculated last frame
+
+MoveHorizontal(float amount)
+{
+  worldPos += (pitchedYawedRolled * vec3(1, 0, 0)) * amount; // positon = postion + (right * amount)
+}
