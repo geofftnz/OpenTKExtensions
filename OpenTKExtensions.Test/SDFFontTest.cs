@@ -72,7 +72,7 @@ namespace OpenTKExtensions.Test
         /// <summary>
         ///A test for LoadMetaData
         ///</summary>
-        [TestMethod()]
+        //[TestMethod()]
         public void LoadMetaDataTest()
         {
             Font target = new Font("","");
