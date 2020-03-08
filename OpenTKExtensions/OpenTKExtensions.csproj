@@ -85,6 +85,7 @@
     <Compile Include="Loaders\MultiPathFileSystemLoader.cs" />
     <Compile Include="Loaders\MemoryLoader.cs" />
     <Compile Include="Loaders\ShaderLoaderBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Buffers\BufferObject.cs" />
     <Compile Include="Resources\Buffers\BufferObjectExtensions.cs" />
     <Compile Include="Resources\FrameBuffer\FrameBuffer.cs" />
