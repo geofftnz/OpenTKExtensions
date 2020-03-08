@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Camera\CamMode.cs" />
     <Compile Include="Camera\ICamera.cs" />
-    <Compile Include="Camera\QuaternionCamera.cs" />
+    <Compile Include="Camera\FlyCamera.cs" />
     <Compile Include="Camera\WalkCamera.cs" />
     <Compile Include="Components\FrameCounter.cs" />
     <Compile Include="Components\LineBuffer.cs" />
