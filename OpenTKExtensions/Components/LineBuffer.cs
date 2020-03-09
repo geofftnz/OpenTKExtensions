@@ -144,7 +144,7 @@ namespace OpenTKExtensions.Components
             //GL.Disable(EnableCap.Texture2D);
             //GL.Disable(EnableCap.CullFace);
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             this.shader
                 .UseProgram()

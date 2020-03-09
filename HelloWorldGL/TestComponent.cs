@@ -55,7 +55,7 @@ namespace HelloWorldGL
             GL.Disable(EnableCap.CullFace);
             GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.Texture2D);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             tex1.Bind(TextureUnit.Texture0);
 
@@ -79,6 +79,8 @@ namespace HelloWorldGL
 
             vertexBuffer.Bind(shader.Resource.VariableLocations["vertex"]);
             indexBuffer.Bind();
+
+            //GL.DrawArrays(PrimitiveType.Triangles, 0, indexBuffer.Length);
             GL.DrawElements(BeginMode.Triangles, indexBuffer.Length, DrawElementsType.UnsignedInt, 0);
 
         }

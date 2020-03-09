@@ -130,7 +130,7 @@ namespace OpenTKExtensions.UI
             //GL.CullFace(CullFaceMode.Back);
             GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
 
             this.shaderProgram

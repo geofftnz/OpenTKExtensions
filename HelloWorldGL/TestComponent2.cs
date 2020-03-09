@@ -59,6 +59,7 @@ namespace HelloWorldGL
 
             vertexBuffer.Bind(shader.Resource.VariableLocations["vertex"]);
             indexBuffer.Bind();
+            //GL.DrawArrays(PrimitiveType.Triangles, 0, indexBuffer.Length);
             GL.DrawElements(BeginMode.Triangles, indexBuffer.Length, DrawElementsType.UnsignedInt, 0);
 
         }

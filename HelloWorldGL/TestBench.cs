@@ -38,13 +38,13 @@ namespace HelloWorldGL
         public RenderData frameData = new RenderData();
 
 
-        public TestBench() :
-            base(
-                 800, 600,
-                 GraphicsMode.Default, "OpenTKExtensions TestBench",
-                 GameWindowFlags.Default, DisplayDevice.Default,
-                 4, 3, GraphicsContextFlags.ForwardCompatible
-                )
+        public TestBench() : base(800,600,GraphicsMode.Default,"OpenTKExtensions Test")
+           //base(
+           //     800, 600,
+           //     GraphicsMode.Default, "OpenTKExtensions TestBench",
+           //     GameWindowFlags.Default, DisplayDevice.Default,
+           //     4, 5, GraphicsContextFlags.ForwardCompatible
+           //    )
         {
             VSync = VSyncMode.Off;
 

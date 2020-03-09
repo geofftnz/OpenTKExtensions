@@ -33,6 +33,5 @@ void main(void)
 	col = mix(col,t1.rgb,t1.a);
 	col = mix(col,t2.rgb,0.5);
 
-
 	out_Colour = vec4(col,1.0);
 }
